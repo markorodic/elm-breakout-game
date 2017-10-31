@@ -22,12 +22,19 @@ main =
 
 type alias Model =
     { paddleX : Int
+    , ballPosition : Ball
     }
 
 
 model : Model
 model =
     { paddleX = 0
+    , ballPosition = { x = 50, y = 50 }
+    }
+
+type alias Ball =
+    { x : Int
+    , y : Int
     }
 
 
@@ -81,14 +88,19 @@ view model =
     let
         positionPad =
             toString model.paddleX
-    in
-    svg [ viewBox "0 0 100 100", width "400px" ]
-        [ rect [ width "20", height "1", x positionPad, y "95" ] []
-        ]
 
-        --, Html.text (toString model.ballVelocity)
-        --, Html.text (toString model.ballPosition)
-        --, Html.text (toString model.paddleX)
+        positionBallX =
+            toString model.ballPosition.x
+
+        positionBallY =
+            toString model.ballPosition.y
+    in
+    div []
+        [ svg [ viewBox "0 0 100 100", width "400px" ]
+            [ rect [ width "1", height "1", x positionBallX, y positionBallY ] []
+            , rect [ width "20", height "1", x positionPad, y "95" ] []
+            ]
+        ]
 
 
 
