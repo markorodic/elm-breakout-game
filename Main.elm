@@ -4,6 +4,7 @@ import Html exposing (Html, div, program, text)
 import Keyboard
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import Time exposing (Time)
 
 
 main : Program Never Model Msg
@@ -23,6 +24,7 @@ main =
 type alias Model =
     { paddleX : Int
     , ballPosition : Ball
+    , ballVelocity : Velocity
     }
 
 
@@ -30,9 +32,15 @@ model : Model
 model =
     { paddleX = 0
     , ballPosition = { x = 50, y = 50 }
+    , ballVelocity = { x = -2, y = -1 }
     }
 
 type alias Ball =
+    { x : Int
+    , y : Int
+    }
+
+type alias Velocity =
     { x : Int
     , y : Int
     }
@@ -47,6 +55,7 @@ type ArrowKey
     = NoKey
     | LeftKey
     | RightKey
+    | SpaceKey
 
 
 
@@ -55,6 +64,7 @@ type ArrowKey
 
 type Msg
     = ArrowPressed ArrowKey
+    | TickUpdate Time
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -63,6 +73,25 @@ update msg model =
         ArrowPressed key ->
             ( keyDown key model, Cmd.none )
 
+        TickUpdate dt ->
+            ( gameLoop model, Cmd.none )
+
+gameLoop : Model -> Model
+gameLoop model =
+    model
+        |> updateBall
+
+
+updateBall : Model -> Model
+updateBall model =
+    let
+        positionX =
+            model.ballPosition.x + model.ballVelocity.x
+
+        positionY =
+            model.ballPosition.y + model.ballVelocity.y
+    in
+    { model | ballPosition = { x = positionX, y = positionY } }
 
 
 keyDown : ArrowKey -> Model -> Model
@@ -74,10 +103,30 @@ keyDown key model =
         RightKey ->
             { model | paddleX = model.paddleX + 5 }
 
+        SpaceKey ->
+            let
+                currentVelocity =
+                    model.ballVelocity
+
+                newVelocityX =
+                    { currentVelocity | x = currentVelocity.x * -1 }
+
+                newVelocityY =
+                    { currentVelocity | y = currentVelocity.y * -1 }
+            in
+            if model.ballPosition.x < 50 then
+                { model | ballVelocity = newVelocityX }
+            else if model.ballPosition.x > 50 then
+                { model | ballVelocity = newVelocityX }
+            else if model.ballPosition.y < 50 then
+                { model | ballVelocity = newVelocityY }
+            else if model.ballPosition.y > 50 then
+                { model | ballVelocity = newVelocityY }
+            else
+                model
+
         _ ->
             model
-
-
 
 
 -- VIEW
@@ -109,8 +158,12 @@ view model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    arrowChanged
+    Sub.batch [ arrowChanged, tick ]
 
+
+tick : Sub Msg
+tick =
+    Time.every (100 * Time.millisecond) TickUpdate
 
 
 
@@ -127,6 +180,9 @@ toArrowChanged code =
 
         39 ->
             ArrowPressed RightKey
+
+        32 ->
+            ArrowPressed SpaceKey
 
         default ->
             ArrowPressed NoKey

@@ -80,35 +80,82 @@ var _user$project$Main$keyDown = F2(
 				return _elm_lang$core$Native_Utils.update(
 					model,
 					{paddleX: model.paddleX + 5});
+			case 'SpaceKey':
+				var currentVelocity = model.ballVelocity;
+				var newVelocityX = _elm_lang$core$Native_Utils.update(
+					currentVelocity,
+					{x: currentVelocity.x * -1});
+				var newVelocityY = _elm_lang$core$Native_Utils.update(
+					currentVelocity,
+					{y: currentVelocity.y * -1});
+				return (_elm_lang$core$Native_Utils.cmp(model.ballPosition.x, 50) < 0) ? _elm_lang$core$Native_Utils.update(
+					model,
+					{ballVelocity: newVelocityX}) : ((_elm_lang$core$Native_Utils.cmp(model.ballPosition.x, 50) > 0) ? _elm_lang$core$Native_Utils.update(
+					model,
+					{ballVelocity: newVelocityX}) : ((_elm_lang$core$Native_Utils.cmp(model.ballPosition.y, 50) < 0) ? _elm_lang$core$Native_Utils.update(
+					model,
+					{ballVelocity: newVelocityY}) : ((_elm_lang$core$Native_Utils.cmp(model.ballPosition.y, 50) > 0) ? _elm_lang$core$Native_Utils.update(
+					model,
+					{ballVelocity: newVelocityY}) : model)));
 			default:
 				return model;
 		}
 	});
+var _user$project$Main$updateBall = function (model) {
+	var positionY = model.ballPosition.y + model.ballVelocity.y;
+	var positionX = model.ballPosition.x + model.ballVelocity.x;
+	return _elm_lang$core$Native_Utils.update(
+		model,
+		{
+			ballPosition: {x: positionX, y: positionY}
+		});
+};
+var _user$project$Main$gameLoop = function (model) {
+	return _user$project$Main$updateBall(model);
+};
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p1 = msg;
-		return {
-			ctor: '_Tuple2',
-			_0: A2(_user$project$Main$keyDown, _p1._0, model),
-			_1: _elm_lang$core$Platform_Cmd$none
-		};
+		if (_p1.ctor === 'ArrowPressed') {
+			return {
+				ctor: '_Tuple2',
+				_0: A2(_user$project$Main$keyDown, _p1._0, model),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: _user$project$Main$gameLoop(model),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
 	});
 var _user$project$Main$model = {
 	paddleX: 0,
-	ballPosition: {x: 50, y: 50}
+	ballPosition: {x: 50, y: 50},
+	ballVelocity: {x: -2, y: -1}
 };
 var _user$project$Main$init = {ctor: '_Tuple2', _0: _user$project$Main$model, _1: _elm_lang$core$Platform_Cmd$none};
-var _user$project$Main$Model = F2(
-	function (a, b) {
-		return {paddleX: a, ballPosition: b};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {paddleX: a, ballPosition: b, ballVelocity: c};
 	});
 var _user$project$Main$Ball = F2(
 	function (a, b) {
 		return {x: a, y: b};
 	});
+var _user$project$Main$Velocity = F2(
+	function (a, b) {
+		return {x: a, y: b};
+	});
+var _user$project$Main$SpaceKey = {ctor: 'SpaceKey'};
 var _user$project$Main$RightKey = {ctor: 'RightKey'};
 var _user$project$Main$LeftKey = {ctor: 'LeftKey'};
 var _user$project$Main$NoKey = {ctor: 'NoKey'};
+var _user$project$Main$TickUpdate = function (a) {
+	return {ctor: 'TickUpdate', _0: a};
+};
+var _user$project$Main$tick = A2(_elm_lang$core$Time$every, 100 * _elm_lang$core$Time$millisecond, _user$project$Main$TickUpdate);
 var _user$project$Main$ArrowPressed = function (a) {
 	return {ctor: 'ArrowPressed', _0: a};
 };
@@ -119,13 +166,24 @@ var _user$project$Main$toArrowChanged = function (code) {
 			return _user$project$Main$ArrowPressed(_user$project$Main$LeftKey);
 		case 39:
 			return _user$project$Main$ArrowPressed(_user$project$Main$RightKey);
+		case 32:
+			return _user$project$Main$ArrowPressed(_user$project$Main$SpaceKey);
 		default:
 			return _user$project$Main$ArrowPressed(_user$project$Main$NoKey);
 	}
 };
 var _user$project$Main$arrowChanged = _elm_lang$keyboard$Keyboard$downs(_user$project$Main$toArrowChanged);
 var _user$project$Main$subscriptions = function (model) {
-	return _user$project$Main$arrowChanged;
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: _user$project$Main$arrowChanged,
+			_1: {
+				ctor: '::',
+				_0: _user$project$Main$tick,
+				_1: {ctor: '[]'}
+			}
+		});
 };
 var _user$project$Main$main = _elm_lang$html$Html$program(
 	{init: _user$project$Main$init, view: _user$project$Main$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})();
