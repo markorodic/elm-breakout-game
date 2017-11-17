@@ -35,10 +35,12 @@ model =
     , ballVelocity = { x = -2, y = -1 }
     }
 
+
 type alias Ball =
     { x : Int
     , y : Int
     }
+
 
 type alias Velocity =
     { x : Int
@@ -76,9 +78,11 @@ update msg model =
         TickUpdate dt ->
             ( gameLoop model, Cmd.none )
 
+
 gameLoop : Model -> Model
 gameLoop model =
     model
+        |> doesBallHitWall
         |> updateBall
 
 
@@ -92,6 +96,30 @@ updateBall model =
             model.ballPosition.y + model.ballVelocity.y
     in
     { model | ballPosition = { x = positionX, y = positionY } }
+
+
+doesBallHitWall : Model -> Model
+doesBallHitWall model =
+    let
+        currentVelocity =
+            model.ballVelocity
+
+        newVelocityX =
+            { currentVelocity | x = currentVelocity.x * -1 }
+
+        newVelocityY =
+            { currentVelocity | y = currentVelocity.y * -1 }
+    in
+    if model.ballPosition.x == 0 then
+        { model | ballVelocity = newVelocityX }
+    else if model.ballPosition.x == 100 then
+        { model | ballVelocity = newVelocityX }
+    else if model.ballPosition.y == 0 then
+        { model | ballVelocity = newVelocityY }
+    else if model.ballPosition.y == 100 then
+        { model | ballVelocity = newVelocityY }
+    else
+        model
 
 
 keyDown : ArrowKey -> Model -> Model
@@ -129,6 +157,7 @@ keyDown key model =
             model
 
 
+
 -- VIEW
 
 
@@ -145,7 +174,7 @@ view model =
             toString model.ballPosition.y
     in
     div []
-        [ svg [ viewBox "0 0 100 100", width "400px" ]
+        [ svg [ width "100", height "100" ]
             [ rect [ width "1", height "1", x positionBallX, y positionBallY ] []
             , rect [ width "20", height "1", x positionPad, y "95" ] []
             ]
@@ -164,7 +193,6 @@ subscriptions model =
 tick : Sub Msg
 tick =
     Time.every (100 * Time.millisecond) TickUpdate
-
 
 
 arrowChanged : Sub Msg
