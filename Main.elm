@@ -32,7 +32,7 @@ model : Model
 model =
     { paddleX = 0
     , ballPosition = { x = 50, y = 50 }
-    , ballVelocity = { x = -2, y = -1 }
+    , ballVelocity = { x = -ballAttributes.velocity, y = -ballAttributes.velocity }
     }
 
 
@@ -53,11 +53,24 @@ init =
     ( model, Cmd.none )
 
 
-type ArrowKey
-    = NoKey
-    | LeftKey
-    | RightKey
-    | SpaceKey
+gameAttributes =
+    { width = 400
+    , height = 400
+    }
+
+
+paddleAttributes =
+    { width = 30
+    , height = 3
+    , yPosition = 395
+    }
+
+
+ballAttributes =
+    { width = 3
+    , height = 3
+    , velocity = 4
+    }
 
 
 
@@ -67,6 +80,13 @@ type ArrowKey
 type Msg
     = ArrowPressed ArrowKey
     | TickUpdate Time
+
+
+type ArrowKey
+    = NoKey
+    | LeftKey
+    | RightKey
+    | SpaceKey
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -112,11 +132,11 @@ doesBallHitWall model =
     in
     if model.ballPosition.x == 0 then
         { model | ballVelocity = newVelocityX }
-    else if model.ballPosition.x == 100 then
+    else if model.ballPosition.x == gameAttributes.width then
         { model | ballVelocity = newVelocityX }
     else if model.ballPosition.y == 0 then
         { model | ballVelocity = newVelocityY }
-    else if model.ballPosition.y == 100 then
+    else if model.ballPosition.y == gameAttributes.height then
         { model | ballVelocity = newVelocityY }
     else
         model
@@ -164,19 +184,19 @@ keyDown key model =
 view : Model -> Html Msg
 view model =
     let
-        positionPad =
+        paddlePosition =
             toString model.paddleX
 
-        positionBallX =
+        ballPositionX =
             toString model.ballPosition.x
 
-        positionBallY =
+        ballPositionY =
             toString model.ballPosition.y
     in
     div []
-        [ svg [ width "100", height "100" ]
-            [ rect [ width "1", height "1", x positionBallX, y positionBallY ] []
-            , rect [ width "20", height "1", x positionPad, y "95" ] []
+        [ svg [ width (toString gameAttributes.width), height (toString gameAttributes.height) ]
+            [ rect [ width (toString ballAttributes.width), height (toString ballAttributes.height), x ballPositionX, y ballPositionY ] []
+            , rect [ width (toString paddleAttributes.width), height (toString paddleAttributes.height), x paddlePosition, y (toString paddleAttributes.yPosition) ] []
             ]
         ]
 
