@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (Html, div, program, text)
+import Html.Attributes exposing (style)
 import Keyboard
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
@@ -31,7 +32,7 @@ type alias Model =
 model : Model
 model =
     { paddleX = 0
-    , ballPosition = { x = 50, y = 50 }
+    , ballPosition = { x = 60, y = 50 }
     , ballVelocity = { x = -ballAttributes.velocity, y = -ballAttributes.velocity }
     }
 
@@ -130,13 +131,13 @@ doesBallHitWall model =
         newVelocityY =
             { currentVelocity | y = currentVelocity.y * -1 }
     in
-    if model.ballPosition.x == 0 then
+    if model.ballPosition.x < 0 then
         { model | ballVelocity = newVelocityX }
-    else if model.ballPosition.x == gameAttributes.width then
+    else if model.ballPosition.x > gameAttributes.width then
         { model | ballVelocity = newVelocityX }
-    else if model.ballPosition.y == 0 then
+    else if model.ballPosition.y < 0 then
         { model | ballVelocity = newVelocityY }
-    else if model.ballPosition.y == gameAttributes.height then
+    else if model.ballPosition.y > gameAttributes.height then
         { model | ballVelocity = newVelocityY }
     else
         model
@@ -194,7 +195,7 @@ view model =
             toString model.ballPosition.y
     in
     div []
-        [ svg [ width (toString gameAttributes.width), height (toString gameAttributes.height) ]
+        [ svg [ width (toString gameAttributes.width), height (toString gameAttributes.height), Html.Attributes.style [ ( "background-color", "#efefef" ) ] ]
             [ rect [ width (toString ballAttributes.width), height (toString ballAttributes.height), x ballPositionX, y ballPositionY ] []
             , rect [ width (toString paddleAttributes.width), height (toString paddleAttributes.height), x paddlePosition, y (toString paddleAttributes.yPosition) ] []
             ]
