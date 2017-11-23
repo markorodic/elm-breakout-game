@@ -26,6 +26,59 @@ type alias Model =
     { paddleX : Int
     , ballPosition : Ball
     , ballVelocity : Velocity
+    , bricks : List Brick
+    }
+
+
+initBricks : List Brick
+initBricks =
+    let
+        initial =
+            List.repeat 90
+                { position = { x = 0, y = 0 }
+                , width = 20
+                , height = 7
+                }
+
+        positioned =
+            List.indexedMap assignBrickPosition initial
+    in
+    positioned
+
+
+assignBrickPosition index b =
+    let
+        xOffset =
+            10
+
+        yOffset =
+            5
+
+        padding =
+            5
+
+        lineLength =
+            15
+
+        x =
+            rem index lineLength * (b.width + padding) + xOffset
+
+        y =
+            (index // lineLength) * (b.height + padding) + yOffset
+    in
+    { b | position = { x = toFloat x, y = toFloat y } }
+
+
+type alias Brick =
+    { position : Position
+    , width : Int
+    , height : Int
+    }
+
+
+type alias Position =
+    { x : Float
+    , y : Float
     }
 
 
@@ -34,6 +87,7 @@ model =
     { paddleX = 0
     , ballPosition = { x = 60, y = 50 }
     , ballVelocity = { x = -ballAttributes.velocity, y = -ballAttributes.velocity }
+    , bricks = initBricks
     }
 
 
@@ -185,24 +239,50 @@ keyDown key model =
 view : Model -> Html Msg
 view model =
     let
-        paddlePosition =
-            toString model.paddleX
-
-        ballPositionX =
-            toString model.ballPosition.x
-
-        ballPositionY =
-            toString model.ballPosition.y
+        --        paddlePosition =
+        --            toString model.paddleX
+        --        ballPositionX =
+        --          toString model.ballPosition.x
+        --    ballPositionY =
+        --      toString model.ballPosition.y
+        nodes =
+            pad model.paddleX
+                :: ball model.ballPosition.x model.ballPosition.y
+                :: List.map brick model.bricks
     in
-    div []
-        [ svg [ width (toString gameAttributes.width), height (toString gameAttributes.height), Html.Attributes.style [ ( "background-color", "#efefef" ) ] ]
-            [ rect [ width (toString ballAttributes.width), height (toString ballAttributes.height), x ballPositionX, y ballPositionY ] []
-            , rect [ width (toString paddleAttributes.width), height (toString paddleAttributes.height), x paddlePosition, y (toString paddleAttributes.yPosition) ] []
-            ]
+    svg [ width (toString gameAttributes.width), height (toString gameAttributes.height), Html.Attributes.style [ ( "background-color", "#efefef" ) ] ]
+        nodes
+
+
+pad : Int -> Svg Msg
+pad x =
+    block (toFloat x) paddleAttributes.yPosition paddleAttributes.width paddleAttributes.height
+
+
+ball : Int -> Int -> Svg Msg
+ball x y =
+    block (toFloat x) (toFloat y) ballAttributes.width ballAttributes.height
+
+
+brick : Brick -> Svg Msg
+brick b =
+    block b.position.x b.position.y b.width b.height
+
+
+block : Float -> Float -> Int -> Int -> Svg Msg
+block x_ y_ width_ height_ =
+    rect
+        [ x (toString x_)
+        , y (toString y_)
+        , width (toString width_)
+        , height (toString height_)
         ]
+        []
 
 
 
+--[ rect [ width (toString ballAttributes.width), height (toString ballAttributes.height), x ballPositionX, y ballPositionY ] []
+--, rect [ width (toString paddleAttributes.width), height (toString paddleAttributes.height), x paddlePosition, y (toString paddleAttributes.yPosition) ] []
 -- SUBSCRIPTIONS
 
 
