@@ -36,8 +36,7 @@ initBricks =
         initial =
             List.repeat 90
                 { position = { x = 0, y = 0 }
-                , width = 20
-                , height = 7
+                , size = { width = 20, height = 7 }
                 }
 
         positioned =
@@ -61,18 +60,17 @@ assignBrickPosition index b =
             15
 
         x =
-            rem index lineLength * (b.width + padding) + xOffset
+            rem index lineLength * (b.size.width + padding) + xOffset
 
         y =
-            (index // lineLength) * (b.height + padding) + yOffset
+            (index // lineLength) * (b.size.height + padding) + yOffset
     in
     { b | position = { x = toFloat x, y = toFloat y } }
 
 
 type alias Brick =
     { position : Position
-    , width : Int
-    , height : Int
+    , size : Size
     }
 
 
@@ -81,6 +79,10 @@ type alias Position =
     , y : Float
     }
 
+type alias Size =
+    { width : Int
+    , height : Int
+    }
 
 model : Model
 model =
@@ -266,7 +268,7 @@ ball x y =
 
 brick : Brick -> Svg Msg
 brick b =
-    block b.position.x b.position.y b.width b.height
+    block b.position.x b.position.y b.size.width b.size.height
 
 
 block : Float -> Float -> Int -> Int -> Svg Msg
