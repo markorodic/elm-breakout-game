@@ -1,5 +1,6 @@
 module Main exposing (..)
 
+import Constants exposing (..)
 import Html exposing (Html, div, program, text)
 import Html.Attributes exposing (style)
 import Keyboard
@@ -108,26 +109,6 @@ type alias Velocity =
 init : ( Model, Cmd Msg )
 init =
     ( model, Cmd.none )
-
-
-gameAttributes =
-    { width = 400
-    , height = 400
-    }
-
-
-paddleAttributes =
-    { width = 30
-    , height = 3
-    , yPosition = 395
-    }
-
-
-ballAttributes =
-    { width = 3
-    , height = 3
-    , velocity = 4
-    }
 
 
 
