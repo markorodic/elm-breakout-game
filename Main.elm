@@ -3,6 +3,7 @@ module Main exposing (..)
 import Constants exposing (..)
 import Html
 import Keyboard
+import Messages exposing (..)
 import Model exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)

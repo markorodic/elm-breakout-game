@@ -1,13 +1,12 @@
 module Model
     exposing
-        ( ArrowKey(..)
-        , Brick
+        ( Brick
         , Model
-        , Msg(..)
         , init
         )
 
 import Constants exposing (..)
+import Messages exposing (ArrowKey(..), Msg(..))
 import Time exposing (Time)
 
 
@@ -102,15 +101,3 @@ type alias Velocity =
 init : ( Model, Cmd Msg )
 init =
     ( model, Cmd.none )
-
-
-type Msg
-    = ArrowPressed ArrowKey
-    | TickUpdate Time
-
-
-type ArrowKey
-    = NoKey
-    | LeftKey
-    | RightKey
-    | SpaceKey
