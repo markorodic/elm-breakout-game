@@ -7,7 +7,6 @@ module Model
 
 import Constants exposing (..)
 import Messages exposing (ArrowKey(..), Msg(..))
-import Time exposing (Time)
 
 
 -- MODEL

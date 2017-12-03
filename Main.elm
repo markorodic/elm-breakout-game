@@ -5,8 +5,6 @@ import Html
 import Keyboard
 import Messages exposing (..)
 import Model exposing (..)
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
 import Time exposing (Time)
 import View
 
