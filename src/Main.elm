@@ -70,8 +70,6 @@ doesBallHitWall model =
         { model | ballVelocity = newVelocityX }
     else if model.ballPosition.y < 0 then
         { model | ballVelocity = newVelocityY }
-    else if model.ballPosition.y > gameAttributes.height then
-        { model | ballVelocity = newVelocityY }
     else
         model
 
