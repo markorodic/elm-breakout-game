@@ -36,8 +36,33 @@ update msg model =
 gameLoop : Model -> Model
 gameLoop model =
     model
+        |> updatePaddleHitBall
         |> doesBallHitWall
         |> updateBall
+
+
+updatePaddleHitBall : Model -> Model
+updatePaddleHitBall model =
+    let
+        positionX =
+            model.ballPosition.x + model.ballVelocity.x
+
+        positionY =
+            model.ballPosition.y + model.ballVelocity.y
+
+        paddlePositionX =
+            model.paddleX
+
+        currentVelocity =
+            model.ballVelocity
+
+        newVelocityY =
+            { currentVelocity | y = currentVelocity.y * -1 }
+    in
+    if positionX > paddlePositionX && positionX < paddlePositionX + paddleAttributes.width && positionY >= paddleAttributes.yPosition then
+        { model | ballVelocity = newVelocityY }
+    else
+        model
 
 
 updateBall : Model -> Model
