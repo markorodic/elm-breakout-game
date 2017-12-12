@@ -119,14 +119,8 @@ keyDown key model =
                 newVelocityY =
                     { currentVelocity | y = currentVelocity.y * -1 }
             in
-            if model.ballPosition.x < 50 then
-                { model | ballVelocity = newVelocityX }
-            else if model.ballPosition.x > 50 then
-                { model | ballVelocity = newVelocityX }
-            else if model.ballPosition.y < 50 then
-                { model | ballVelocity = newVelocityY }
-            else if model.ballPosition.y > 50 then
-                { model | ballVelocity = newVelocityY }
+            if not model.playing then
+                { model | ballPosition = { x = 60, y = 50 }, ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, playing = True }
             else
                 model
 

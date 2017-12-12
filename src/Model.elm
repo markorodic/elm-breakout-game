@@ -17,6 +17,7 @@ type alias Model =
     , ballPosition : Ball
     , ballVelocity : Velocity
     , bricks : List Brick
+    , playing : Bool
     }
 
 
@@ -80,8 +81,9 @@ model : Model
 model =
     { paddleX = 0
     , ballPosition = { x = 60, y = 50 }
-    , ballVelocity = { x = -ballAttributes.velocity, y = -ballAttributes.velocity }
+    , ballVelocity = { x = 0, y = 0 }
     , bricks = initBricks
+    , playing = False
     }
 
 
