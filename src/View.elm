@@ -15,12 +15,6 @@ import Svg.Attributes exposing (..)
 view : Model -> Html Msg
 view model =
     let
-        --        paddlePosition =
-        --            toString model.paddleX
-        --        ballPositionX =
-        --          toString model.ballPosition.x
-        --    ballPositionY =
-        --      toString model.ballPosition.y
         nodes =
             pad model.paddleX
                 :: ball model.ballPosition.x model.ballPosition.y
