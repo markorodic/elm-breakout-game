@@ -96,7 +96,7 @@ doesBallHitWall model =
     else if model.ballPosition.y < 0 then
         { model | ballVelocity = newVelocityY }
     else if model.ballPosition.y > gameAttributes.height then
-        { model | ballVelocity = { x = 0, y = 0 }, ballPosition = { x = 60, y = 50 }, playing = False }
+        { model | ballVelocity = { x = 0, y = 0 }, ballPosition = ballAttributes.startPosition, playing = False }
     else
         model
 
@@ -122,7 +122,7 @@ keyDown key model =
                     { currentVelocity | y = currentVelocity.y * -1 }
             in
             if not model.playing then
-                { model | ballPosition = { x = 60, y = 50 }, ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, playing = True }
+                { model | ballPosition = ballAttributes.startPosition, ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, playing = True }
             else
                 model
 

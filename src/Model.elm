@@ -80,7 +80,7 @@ type alias Size =
 model : Model
 model =
     { paddleX = 0
-    , ballPosition = { x = 60, y = 50 }
+    , ballPosition = ballAttributes.startPosition
     , ballVelocity = { x = 0, y = 0 }
     , bricks = initBricks
     , playing = False

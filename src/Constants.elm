@@ -1,5 +1,6 @@
 module Constants exposing (..)
 
+
 gameAttributes =
     { width = 400
     , height = 400
@@ -17,4 +18,5 @@ ballAttributes =
     { width = 3
     , height = 3
     , velocity = 4
+    , startPosition = { x = 200, y = 200 }
     }
