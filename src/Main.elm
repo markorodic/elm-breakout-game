@@ -36,9 +36,42 @@ update msg model =
 gameLoop : Model -> Model
 gameLoop model =
     model
+        |> updateBallHitBrick
         |> updatePaddleHitBall
         |> doesBallHitWall
         |> updateBall
+
+
+updateBallHitBrick : Model -> Model
+updateBallHitBrick model =
+    let
+        ballPositionX =
+            toFloat model.ballPosition.x
+
+        ballPositionY =
+            toFloat model.ballPosition.y
+
+        remainingBricks =
+            List.filter (\brick -> not (isBallInBrick model.ballPosition brick.position)) model.bricks
+    in
+    { model | bricks = remainingBricks }
+
+
+isBallInBrick ball brick =
+    let
+        brickStartX =
+            brick.x
+
+        brickEndX =
+            brick.x + 20
+
+        brickStartY =
+            brick.y
+
+        brickEndY =
+            brick.y + 7
+    in
+    ball.x > brickStartX && ball.x < brickEndX && ball.y > brickStartY && ball.y < brickEndY
 
 
 updatePaddleHitBall : Model -> Model
