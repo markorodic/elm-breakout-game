@@ -26,12 +26,12 @@ view model =
 
 pad : Int -> Svg Msg
 pad x =
-    block (toFloat x) paddleAttributes.yPosition paddleAttributes.width paddleAttributes.height
+    block x paddleAttributes.yPosition paddleAttributes.width paddleAttributes.height
 
 
 ball : Int -> Int -> Svg Msg
 ball x y =
-    block (toFloat x) (toFloat y) ballAttributes.width ballAttributes.height
+    block x y ballAttributes.width ballAttributes.height
 
 
 brick : Brick -> Svg Msg
@@ -39,7 +39,7 @@ brick b =
     block b.position.x b.position.y b.size.width b.size.height
 
 
-block : Float -> Float -> Int -> Int -> Svg Msg
+block : Int -> Int -> Int -> Int -> Svg Msg
 block x_ y_ width_ height_ =
     rect
         [ x (toString x_)

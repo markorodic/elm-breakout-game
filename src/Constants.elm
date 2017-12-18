@@ -20,3 +20,9 @@ ballAttributes =
     , velocity = 4
     , startPosition = { x = 200, y = 200 }
     }
+
+
+brickAttributes =
+    { width = 20
+    , height = 7
+    }

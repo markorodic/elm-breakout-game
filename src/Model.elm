@@ -27,7 +27,7 @@ initBricks =
         initial =
             List.repeat 90
                 { position = { x = 0, y = 0 }
-                , size = { width = 20, height = 7 }
+                , size = { width = brickAttributes.width, height = brickAttributes.height }
                 }
 
         positioned =
@@ -56,7 +56,7 @@ assignBrickPosition index b =
         y =
             (index // lineLength) * (b.size.height + padding) + yOffset
     in
-    { b | position = { x = toFloat x, y = toFloat y } }
+    { b | position = { x = x, y = y } }
 
 
 type alias Brick =
@@ -66,8 +66,8 @@ type alias Brick =
 
 
 type alias Position =
-    { x : Float
-    , y : Float
+    { x : Int
+    , y : Int
     }
 
 

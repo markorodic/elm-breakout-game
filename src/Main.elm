@@ -75,13 +75,13 @@ isBallInBrick ball brick =
             brick.x
 
         brickEndX =
-            brick.x + 20
+            brick.x + brickAttributes.width
 
         brickStartY =
             brick.y
 
         brickEndY =
-            brick.y + 7
+            brick.y + brickAttributes.height
     in
     ball.x > brickStartX && ball.x < brickEndX && ball.y > brickStartY && ball.y < brickEndY
 
