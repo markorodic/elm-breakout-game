@@ -18,6 +18,8 @@ type alias Model =
     , ballVelocity : Velocity
     , bricks : List Brick
     , playing : Bool
+    , score : Int
+    , lives : Int
     }
 
 
@@ -84,6 +86,8 @@ model =
     , ballVelocity = { x = 0, y = 0 }
     , bricks = initBricks
     , playing = False
+    , score = 0
+    , lives = 3
     }
 
 
