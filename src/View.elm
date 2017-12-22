@@ -1,7 +1,7 @@
 module View exposing (view)
 
 import Constants exposing (..)
-import Html exposing (Html, div, program, text)
+import Html exposing (Html, div, program, span, text)
 import Html.Attributes exposing (style)
 import Messages exposing (..)
 import Model exposing (..)
@@ -20,8 +20,20 @@ view model =
                 :: ball model.ballPosition.x model.ballPosition.y
                 :: List.map brick model.bricks
     in
-    svg [ width (toString gameAttributes.width), height (toString gameAttributes.height), Html.Attributes.style [ ( "background-color", "#efefef" ) ] ]
-        nodes
+    div []
+        [ div [ width (toString gameAttributes.width) ]
+            [ span []
+                [ span [] [ Html.text "Score: " ]
+                , span [] [ Html.text (toString model.score) ]
+                ]
+            , span []
+                [ span [] [ Html.text "Lives: " ]
+                , span [] [ Html.text (toString model.lives) ]
+                ]
+            ]
+        , svg [ width (toString gameAttributes.width), height (toString gameAttributes.height), Html.Attributes.style [ ( "background-color", "#efefef" ) ] ]
+            nodes
+        ]
 
 
 pad : Int -> Svg Msg
