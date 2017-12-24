@@ -46,10 +46,10 @@ updateBallHitBrick : Model -> Model
 updateBallHitBrick model =
     let
         ballPositionX =
-            toFloat model.ballPosition.x
+            model.ballPosition.x
 
         ballPositionY =
-            toFloat model.ballPosition.y
+            model.ballPosition.y
 
         currentVelocity =
             model.ballVelocity
