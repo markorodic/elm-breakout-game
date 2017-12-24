@@ -51,14 +51,14 @@ updateBallHitBrick model =
         ballPositionY =
             toFloat model.ballPosition.y
 
-        remainingBricks =
-            List.filter (\brick -> not (isBallInBrick model.ballPosition brick.position)) model.bricks
-
         currentVelocity =
             model.ballVelocity
 
         invertVelocity =
             { currentVelocity | y = currentVelocity.y * -1 }
+
+        remainingBricks =
+            notCollidedBricks model
 
         newVelocity =
             if model.bricks == remainingBricks then
@@ -69,7 +69,12 @@ updateBallHitBrick model =
     { model | bricks = remainingBricks, ballVelocity = newVelocity }
 
 
-isBallInBrick ball brick =
+notCollidedBricks : Model -> List Brick
+notCollidedBricks model =
+    List.filter (\brick -> not (hasBallHitBrick model.ballPosition brick.position)) model.bricks
+
+
+hasBallHitBrick ball brick =
     let
         brickStartX =
             brick.x
