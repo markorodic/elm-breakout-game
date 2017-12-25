@@ -1,5 +1,6 @@
 module View exposing (view)
 
+import Bricks exposing (..)
 import Constants exposing (..)
 import Html exposing (Html, div, program, span, text)
 import Html.Attributes exposing (style)
