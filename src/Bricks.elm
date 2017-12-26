@@ -3,40 +3,34 @@ module Bricks exposing (..)
 import Constants exposing (..)
 
 
-initBricks : List Brick
-initBricks =
+emptyBrickList : List Brick
+emptyBrickList =
     let
-        initial =
-            List.repeat 90
+        initialBricks =
+            List.repeat brickLayout.numberOfBricks
                 { position = { x = 0, y = 0 }
                 , size = { width = brickAttributes.width, height = brickAttributes.height }
                 }
-
-        positioned =
-            List.indexedMap assignBrickPosition initial
     in
-    positioned
+    initialBricks
+
+
+initBricks : List Brick
+initBricks =
+    let
+        positionedBricks =
+            List.indexedMap assignBrickPosition emptyBrickList
+    in
+    positionedBricks
 
 
 assignBrickPosition index b =
     let
-        xOffset =
-            10
-
-        yOffset =
-            5
-
-        padding =
-            5
-
-        lineLength =
-            15
-
         x =
-            rem index lineLength * (b.size.width + padding) + xOffset
+            rem index brickLayout.bricksPerLine * (b.size.width + brickLayout.padding) + brickLayout.xMargin
 
         y =
-            (index // lineLength) * (b.size.height + padding) + yOffset
+            (index // brickLayout.bricksPerLine) * (b.size.height + brickLayout.padding) + brickLayout.yMargin
     in
     { b | position = { x = x, y = y } }
 

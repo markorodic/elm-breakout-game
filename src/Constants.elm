@@ -26,3 +26,12 @@ brickAttributes =
     { width = 20
     , height = 7
     }
+
+
+brickLayout =
+    { numberOfBricks = 90
+    , xMargin = 10
+    , yMargin = 5
+    , padding = 5
+    , bricksPerLine = 15
+    }
