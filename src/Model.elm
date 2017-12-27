@@ -65,10 +65,20 @@ update msg model =
 gameLoop : Model -> Model
 gameLoop model =
     model
+        |> updateNumberOfBricks
         |> updateBallHitBrick
         |> updatePaddleHitBall
         |> doesBallHitWall
         |> updateBall
+
+
+updateNumberOfBricks : Model -> Model
+updateNumberOfBricks model =
+    let
+        remainingBricks =
+            notCollidedBricks model.ballPosition model.bricks
+    in
+    { model | bricks = remainingBricks }
 
 
 updateBallHitBrick : Model -> Model
