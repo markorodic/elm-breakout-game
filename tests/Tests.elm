@@ -41,4 +41,16 @@ suite =
                     in
                     Expect.equal (List.length (notCollidedBricks ballPosition model.bricks)) oneBrickMissing
             ]
+        , describe "Ball updates"
+            [ test "Add velocity to ball position" <|
+                \() ->
+                    let
+                        ball =
+                            { x = 0, y = 0 }
+
+                        velocity =
+                            { x = 2, y = 2 }
+                    in
+                    Expect.equal (addVelocityToPosition ball velocity) { x = 2, y = 2 }
+            ]
         ]

@@ -69,7 +69,7 @@ gameLoop model =
         |> updateBallHitBrick
         |> updatePaddleHitBall
         |> doesBallHitWall
-        |> updateBall
+        |> updateBallPosition
 
 
 updateNumberOfBricks : Model -> Model
@@ -79,6 +79,24 @@ updateNumberOfBricks model =
             notCollidedBricks model.ballPosition model.bricks
     in
     { model | bricks = remainingBricks }
+
+
+changeBallVelocity : Model -> Model
+changeBallVelocity model =
+    let
+        currentVelocity =
+            model.ballVelocity
+
+        changeVelocityY =
+            { currentVelocity | y = currentVelocity.y * -1 }
+
+        newVelocityY =
+            if notCollidedBricks model.ballPosition model.bricks == model.bricks then
+                changeVelocityY
+            else
+                currentVelocity
+    in
+    { model | ballVelocity = newVelocityY }
 
 
 updateBallHitBrick : Model -> Model
@@ -154,16 +172,24 @@ updatePaddleHitBall model =
         model
 
 
-updateBall : Model -> Model
-updateBall model =
+addVelocityToPosition ballPosition ballVelocity =
     let
         positionX =
-            model.ballPosition.x + model.ballVelocity.x
+            ballPosition.x + ballVelocity.x
 
         positionY =
-            model.ballPosition.y + model.ballVelocity.y
+            ballPosition.y + ballVelocity.y
     in
-    { model | ballPosition = { x = positionX, y = positionY } }
+    { x = positionX, y = positionY }
+
+
+updateBallPosition : Model -> Model
+updateBallPosition model =
+    let
+        updatedPosition =
+            addVelocityToPosition model.ballPosition model.ballVelocity
+    in
+    { model | ballPosition = updatedPosition }
 
 
 doesBallHitWall : Model -> Model
