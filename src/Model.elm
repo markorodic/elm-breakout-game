@@ -1,9 +1,4 @@
-module Model
-    exposing
-        ( Model
-        , init
-        , update
-        )
+module Model exposing (..)
 
 import Bricks exposing (..)
 import Constants exposing (..)
@@ -92,7 +87,7 @@ updateBallHitBrick model =
             { currentVelocity | y = currentVelocity.y * -1 }
 
         remainingBricks =
-            notCollidedBricks model
+            notCollidedBricks model.ballPosition model.bricks
 
         newVelocity =
             if model.bricks == remainingBricks then
@@ -103,9 +98,9 @@ updateBallHitBrick model =
     { model | bricks = remainingBricks, ballVelocity = newVelocity }
 
 
-notCollidedBricks : Model -> List Brick
-notCollidedBricks model =
-    List.filter (\brick -> not (hasBallHitBrick model.ballPosition brick.position)) model.bricks
+notCollidedBricks : Ball -> List Brick -> List Brick
+notCollidedBricks ball bricks =
+    List.filter (\brick -> not (hasBallHitBrick ball brick.position)) bricks
 
 
 hasBallHitBrick ball brick =

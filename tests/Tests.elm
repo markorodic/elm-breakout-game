@@ -4,6 +4,7 @@ import Bricks exposing (assignBrickPosition)
 import Constants exposing (..)
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
+import Model exposing (..)
 import Test exposing (..)
 
 
@@ -29,5 +30,15 @@ suite =
                             }
                     in
                     Expect.equal (assignBrickPosition 89 brick) { position = { x = 360, y = 65 }, size = { width = 20, height = 7 } }
+            , test "bricks are filterd on collision" <|
+                \() ->
+                    let
+                        ballPosition =
+                            { x = 11, y = 6 }
+
+                        oneBrickMissing =
+                            brickLayout.numberOfBricks - 1
+                    in
+                    Expect.equal (List.length (notCollidedBricks ballPosition model.bricks)) oneBrickMissing
             ]
         ]
