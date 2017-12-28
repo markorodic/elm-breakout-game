@@ -70,84 +70,6 @@ gameLoop model =
         |> updateBallPosition
 
 
-updateNumberOfBricks : Model -> Model
-updateNumberOfBricks model =
-    let
-        remainingBricks =
-            notCollidedBricks model
-    in
-    { model | bricks = remainingBricks }
-
-
-changeBallVelocity : Model -> Model
-changeBallVelocity model =
-    let
-        currentVelocity =
-            model.ballVelocity
-
-        changeVelocityY =
-            { currentVelocity | y = currentVelocity.y * -1 }
-
-        newVelocityY =
-            if notCollidedBricks model == model.bricks then
-                changeVelocityY
-            else
-                currentVelocity
-    in
-    { model | ballVelocity = newVelocityY }
-
-
-updateBallHitBrick : Model -> Model
-updateBallHitBrick model =
-    let
-        ballPositionX =
-            model.ballPosition.x
-
-        ballPositionY =
-            model.ballPosition.y
-
-        currentVelocity =
-            model.ballVelocity
-
-        invertVelocity =
-            { currentVelocity | y = currentVelocity.y * -1 }
-
-        remainingBricks =
-            notCollidedBricks model
-
-        newVelocity =
-            if model.bricks == remainingBricks then
-                currentVelocity
-            else
-                invertVelocity
-    in
-    { model | bricks = remainingBricks, ballVelocity = newVelocity }
-
-
-updatePaddleHitBall : Model -> Model
-updatePaddleHitBall model =
-    let
-        positionX =
-            model.ballPosition.x + model.ballVelocity.x
-
-        positionY =
-            model.ballPosition.y + model.ballVelocity.y
-
-        paddlePositionX =
-            model.paddleX
-
-        currentVelocity =
-            model.ballVelocity
-
-        newVelocityY =
-            { currentVelocity | y = currentVelocity.y * -1 }
-    in
-    if positionX > paddlePositionX && positionX < paddlePositionX + paddleAttributes.width && positionY >= paddleAttributes.yPosition then
-        { model | ballVelocity = newVelocityY }
-    else
-        model
-
-
 updateBallPosition : Model -> Model
 updateBallPosition model =
     let
@@ -158,6 +80,15 @@ updateBallPosition model =
             model.ballPosition.y + model.ballVelocity.y
     in
     { model | ballPosition = { x = positionX, y = positionY } }
+
+
+updateNumberOfBricks : Model -> Model
+updateNumberOfBricks model =
+    let
+        remainingBricks =
+            notCollidedBricks model
+    in
+    { model | bricks = remainingBricks }
 
 
 updateBallVelocity : Model -> Model
