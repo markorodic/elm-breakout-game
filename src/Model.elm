@@ -76,7 +76,7 @@ updateNumberOfBricks : Model -> Model
 updateNumberOfBricks model =
     let
         remainingBricks =
-            notCollidedBricks model.ballPosition model.bricks
+            notCollidedBricks model
     in
     { model | bricks = remainingBricks }
 
@@ -91,7 +91,7 @@ changeBallVelocity model =
             { currentVelocity | y = currentVelocity.y * -1 }
 
         newVelocityY =
-            if notCollidedBricks model.ballPosition model.bricks == model.bricks then
+            if notCollidedBricks model == model.bricks then
                 changeVelocityY
             else
                 currentVelocity
@@ -115,7 +115,7 @@ updateBallHitBrick model =
             { currentVelocity | y = currentVelocity.y * -1 }
 
         remainingBricks =
-            notCollidedBricks model.ballPosition model.bricks
+            notCollidedBricks model
 
         newVelocity =
             if model.bricks == remainingBricks then
@@ -126,9 +126,9 @@ updateBallHitBrick model =
     { model | bricks = remainingBricks, ballVelocity = newVelocity }
 
 
-notCollidedBricks : Ball -> List Brick -> List Brick
-notCollidedBricks ball bricks =
-    List.filter (\brick -> not (hasBallHitBrick ball brick.position)) bricks
+notCollidedBricks : Model -> List Brick
+notCollidedBricks model =
+    List.filter (\brick -> not (hasBallHitBrick model.ballPosition brick.position)) model.bricks
 
 
 hasBallHitBrick ball brick =
@@ -172,24 +172,16 @@ updatePaddleHitBall model =
         model
 
 
-addVelocityToPosition ballPosition ballVelocity =
-    let
-        positionX =
-            ballPosition.x + ballVelocity.x
-
-        positionY =
-            ballPosition.y + ballVelocity.y
-    in
-    { x = positionX, y = positionY }
-
-
 updateBallPosition : Model -> Model
 updateBallPosition model =
     let
-        updatedPosition =
-            addVelocityToPosition model.ballPosition model.ballVelocity
+        positionX =
+            model.ballPosition.x + model.ballVelocity.x
+
+        positionY =
+            model.ballPosition.y + model.ballVelocity.y
     in
-    { model | ballPosition = updatedPosition }
+    { model | ballPosition = { x = positionX, y = positionY } }
 
 
 doesBallHitWall : Model -> Model
