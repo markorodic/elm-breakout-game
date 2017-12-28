@@ -65,9 +65,8 @@ update msg model =
 gameLoop : Model -> Model
 gameLoop model =
     model
-        |> updateNumberOfBricks
-        |> updateBallHitBrick
         |> updateBallVelocity
+        |> updateNumberOfBricks
         |> updateBallPosition
 
 
@@ -125,28 +124,6 @@ updateBallHitBrick model =
     { model | bricks = remainingBricks, ballVelocity = newVelocity }
 
 
-notCollidedBricks : Model -> List Brick
-notCollidedBricks model =
-    List.filter (\brick -> not (hasBallHitBrick model.ballPosition brick.position)) model.bricks
-
-
-hasBallHitBrick ball brick =
-    let
-        brickStartX =
-            brick.x
-
-        brickEndX =
-            brick.x + brickAttributes.width
-
-        brickStartY =
-            brick.y
-
-        brickEndY =
-            brick.y + brickAttributes.height
-    in
-    ball.x > brickStartX && ball.x < brickEndX && ball.y > brickStartY && ball.y < brickEndY
-
-
 updatePaddleHitBall : Model -> Model
 updatePaddleHitBall model =
     let
@@ -196,7 +173,7 @@ updateBallVelocity model =
                 model.ballVelocity.x
 
         updateVelocityY =
-            if doesBallHitCeiling ball || doesBallHitPaddle model then
+            if doesBallHitCeiling ball || doesBallHitPaddle model || doesBallHitBrick model then
                 model.ballVelocity.y * -1
             else
                 model.ballVelocity.y
@@ -223,6 +200,34 @@ doesBallHitPaddle model =
         + paddleAttributes.width
         && model.ballPosition.y
         >= paddleAttributes.yPosition
+
+
+doesBallHitBrick : Model -> Bool
+doesBallHitBrick model =
+    not (model.bricks == notCollidedBricks model)
+
+
+notCollidedBricks : Model -> List Brick
+notCollidedBricks model =
+    List.filter (\brick -> not (hasBallHitBrick model.ballPosition brick)) model.bricks
+
+
+hasBallHitBrick : Ball -> Brick -> Bool
+hasBallHitBrick ball brick =
+    let
+        brickStartX =
+            brick.position.x
+
+        brickEndX =
+            brick.position.x + brickAttributes.width
+
+        brickStartY =
+            brick.position.y
+
+        brickEndY =
+            brick.position.y + brickAttributes.height
+    in
+    ball.x > brickStartX && ball.x < brickEndX && ball.y > brickStartY && ball.y < brickEndY
 
 
 keyDown : ArrowKey -> Model -> Model

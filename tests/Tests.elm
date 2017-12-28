@@ -54,5 +54,10 @@ suite =
                     { model | ballPosition = { x = 75, y = 395 }, ballVelocity = { x = 4, y = 4 }, paddleX = 70 }
                         |> updateBallVelocity
                         |> Expect.equal { model | ballPosition = { x = 75, y = 395 }, ballVelocity = { x = 4, y = -4 }, paddleX = 70 }
+            , test "Change ball velocity on brick hit" <|
+                \() ->
+                    { model | ballPosition = { x = 11, y = 6 }, ballVelocity = { x = 4, y = -4 } }
+                        |> updateBallVelocity
+                        |> Expect.equal { model | ballPosition = { x = 11, y = 6 }, ballVelocity = { x = 4, y = 4 } }
             ]
         ]
