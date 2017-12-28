@@ -68,7 +68,6 @@ gameLoop model =
         |> updateNumberOfBricks
         |> updateBallHitBrick
         |> updatePaddleHitBall
-        |> doesBallHitWall
         |> updateBallPosition
 
 
@@ -184,28 +183,9 @@ updateBallPosition model =
     { model | ballPosition = { x = positionX, y = positionY } }
 
 
-doesBallHitWall : Model -> Model
+doesBallHitWall : Model -> Bool
 doesBallHitWall model =
-    let
-        currentVelocity =
-            model.ballVelocity
-
-        newVelocityX =
-            { currentVelocity | x = currentVelocity.x * -1 }
-
-        newVelocityY =
-            { currentVelocity | y = currentVelocity.y * -1 }
-    in
-    if model.ballPosition.x < 0 then
-        { model | ballVelocity = newVelocityX }
-    else if model.ballPosition.x > gameAttributes.width then
-        { model | ballVelocity = newVelocityX }
-    else if model.ballPosition.y < 0 then
-        { model | ballVelocity = newVelocityY }
-    else if model.ballPosition.y > gameAttributes.height then
-        { model | ballVelocity = { x = 0, y = 0 }, ballPosition = ballAttributes.startPosition, playing = False }
-    else
-        model
+    model.ballPosition.x <= 0 || model.ballPosition.x >= gameAttributes.width
 
 
 keyDown : ArrowKey -> Model -> Model

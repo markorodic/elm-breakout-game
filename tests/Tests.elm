@@ -34,5 +34,15 @@ suite =
                     { model | ballPosition = { x = 0, y = 0 }, ballVelocity = { x = 2, y = 2 } }
                         |> updateBallPosition
                         |> Expect.equal { model | ballPosition = { x = 2, y = 2 }, ballVelocity = { x = 2, y = 2 } }
+            , test "Change ball velocity on left wall collision" <|
+                \() ->
+                    { model | ballPosition = { x = 0, y = 100 }, ballVelocity = { x = 4, y = 4 } }
+                        |> doesBallHitWall
+                        |> Expect.equal True
+            , test "Change ball velocity on right wall collision" <|
+                \() ->
+                    { model | ballPosition = { x = 400, y = 100 }, ballVelocity = { x = 4, y = 4 } }
+                        |> doesBallHitWall
+                        |> Expect.equal True
             ]
         ]
