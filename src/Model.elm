@@ -183,9 +183,35 @@ updateBallPosition model =
     { model | ballPosition = { x = positionX, y = positionY } }
 
 
-doesBallHitWall : Model -> Bool
-doesBallHitWall model =
-    model.ballPosition.x <= 0 || model.ballPosition.x >= gameAttributes.width
+updateBallVelocity : Model -> Model
+updateBallVelocity model =
+    let
+        ball =
+            model.ballPosition
+
+        updateVelocityX =
+            if doesBallHitWall ball then
+                model.ballVelocity.x * -1
+            else
+                model.ballVelocity.x
+
+        updateVelocityY =
+            if doesBallHitCeiling ball then
+                model.ballVelocity.y * -1
+            else
+                model.ballVelocity.y
+    in
+    { model | ballVelocity = { x = updateVelocityX, y = updateVelocityY } }
+
+
+doesBallHitWall : Ball -> Bool
+doesBallHitWall ball =
+    ball.x <= 0 || ball.x >= gameAttributes.width
+
+
+doesBallHitCeiling : Ball -> Bool
+doesBallHitCeiling ball =
+    ball.y <= 0
 
 
 keyDown : ArrowKey -> Model -> Model
