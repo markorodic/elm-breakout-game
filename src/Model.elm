@@ -67,7 +67,7 @@ gameLoop model =
     model
         |> updateNumberOfBricks
         |> updateBallHitBrick
-        |> updatePaddleHitBall
+        |> updateBallVelocity
         |> updateBallPosition
 
 
@@ -196,7 +196,7 @@ updateBallVelocity model =
                 model.ballVelocity.x
 
         updateVelocityY =
-            if doesBallHitCeiling ball then
+            if doesBallHitCeiling ball || doesBallHitPaddle model then
                 model.ballVelocity.y * -1
             else
                 model.ballVelocity.y
@@ -212,6 +212,17 @@ doesBallHitWall ball =
 doesBallHitCeiling : Ball -> Bool
 doesBallHitCeiling ball =
     ball.y <= 0
+
+
+doesBallHitPaddle : Model -> Bool
+doesBallHitPaddle model =
+    model.ballPosition.x
+        > model.paddleX
+        && model.ballPosition.x
+        < model.paddleX
+        + paddleAttributes.width
+        && model.ballPosition.y
+        >= paddleAttributes.yPosition
 
 
 keyDown : ArrowKey -> Model -> Model
