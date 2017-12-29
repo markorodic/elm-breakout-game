@@ -73,13 +73,21 @@ gameLoop model =
 updateBallPosition : Model -> Model
 updateBallPosition model =
     let
-        positionX =
-            model.ballPosition.x + model.ballVelocity.x
+        ballPos =
+            model.ballPosition
 
-        positionY =
-            model.ballPosition.y + model.ballVelocity.y
+        ballVel =
+            model.ballVelocity
+
+        updatePosition =
+            if hasBallFallen ballPos then
+                ballAttributes.startPosition
+            else
+                { x = ballPos.x + ballVel.x
+                , y = ballPos.y + ballVel.y
+                }
     in
-    { model | ballPosition = { x = positionX, y = positionY } }
+    { model | ballPosition = updatePosition }
 
 
 updateNumberOfBricks : Model -> Model
@@ -94,22 +102,38 @@ updateNumberOfBricks model =
 updateBallVelocity : Model -> Model
 updateBallVelocity model =
     let
-        ball =
+        ballPosition =
             model.ballPosition
 
+        ballVelocity =
+            model.ballVelocity
+
         updateVelocityX =
-            if doesBallHitWall ball then
-                model.ballVelocity.x * -1
+            if doesBallHitWall ballPosition then
+                ballVelocity.x * -1
             else
-                model.ballVelocity.x
+                ballVelocity.x
 
         updateVelocityY =
-            if doesBallHitCeiling ball || doesBallHitPaddle model || doesBallHitBrick model then
-                model.ballVelocity.y * -1
+            if doesBallHitCeiling ballPosition || doesBallHitPaddle model || doesBallHitBrick model then
+                ballVelocity.y * -1
             else
-                model.ballVelocity.y
+                ballVelocity.y
+
+        updateVelocity =
+            if hasBallFallen ballPosition then
+                { x = 0, y = 0 }
+            else
+                { x = updateVelocityX
+                , y = updateVelocityY
+                }
     in
-    { model | ballVelocity = { x = updateVelocityX, y = updateVelocityY } }
+    { model | ballVelocity = updateVelocity }
+
+
+hasBallFallen : Ball -> Bool
+hasBallFallen ball =
+    ball.y >= gameAttributes.height
 
 
 doesBallHitWall : Ball -> Bool

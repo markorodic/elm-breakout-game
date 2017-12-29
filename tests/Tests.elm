@@ -59,5 +59,15 @@ suite =
                     { model | ballPosition = { x = 11, y = 6 }, ballVelocity = { x = 4, y = -4 } }
                         |> updateBallVelocity
                         |> Expect.equal { model | ballPosition = { x = 11, y = 6 }, ballVelocity = { x = 4, y = 4 } }
+            , test "Reset ball position on fall" <|
+                \() ->
+                    { model | ballPosition = { x = 200, y = 400 } }
+                        |> updateBallPosition
+                        |> Expect.equal { model | ballPosition = { x = 200, y = 200 } }
+            , test "Stop ball velocity on fall" <|
+                \() ->
+                    { model | ballPosition = { x = 200, y = 400 }, ballVelocity = { x = 4, y = 4 } }
+                        |> updateBallVelocity
+                        |> Expect.equal { model | ballPosition = { x = 200, y = 400 }, ballVelocity = { x = 0, y = 0 } }
             ]
         ]
