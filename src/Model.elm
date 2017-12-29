@@ -194,8 +194,14 @@ updateGame model =
                 model.lives - 1
             else
                 model.lives
+
+        updateScore =
+            if doesBallHitBrick model then
+                model.score + 1
+            else
+                model.score
     in
-    { model | lives = updateLives }
+    { model | lives = updateLives, score = updateScore }
 
 
 keyDown : ArrowKey -> Model -> Model
