@@ -70,4 +70,11 @@ suite =
                         |> updateBallVelocity
                         |> Expect.equal { model | ballPosition = { x = 200, y = 400 }, ballVelocity = { x = 0, y = 0 } }
             ]
+        , describe "Game mechanics"
+            [ test "Decrease lives on ball fall" <|
+                \() ->
+                    { model | ballPosition = { x = 200, y = 400 } }
+                        |> updateGame
+                        |> Expect.equal { model | ballPosition = { x = 200, y = 400 }, lives = 2 }
+            ]
         ]

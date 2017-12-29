@@ -65,6 +65,7 @@ update msg model =
 gameLoop : Model -> Model
 gameLoop model =
     model
+        |> updateGame
         |> updateBallVelocity
         |> updateNumberOfBricks
         |> updateBallPosition
@@ -183,6 +184,18 @@ hasBallHitBrick ball brick =
             brick.position.y + brickAttributes.height
     in
     ball.x > brickStartX && ball.x < brickEndX && ball.y > brickStartY && ball.y < brickEndY
+
+
+updateGame : Model -> Model
+updateGame model =
+    let
+        updateLives =
+            if hasBallFallen model.ballPosition then
+                model.lives - 1
+            else
+                model.lives
+    in
+    { model | lives = updateLives }
 
 
 keyDown : ArrowKey -> Model -> Model
