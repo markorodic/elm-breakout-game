@@ -10,7 +10,7 @@ import Test exposing (Test, describe, fuzz, test)
 ballUpdates : Test
 ballUpdates =
     describe "Test ball updates"
-        [ fuzz someFuzzer "fuzz test" <|
+        [ fuzz allBallPositions "fuzz test" <|
             \ballPosition ->
                 let
                     updatedPosition =
@@ -57,8 +57,8 @@ ballUpdates =
         ]
 
 
-someFuzzer : Fuzzer Ball
-someFuzzer =
+allBallPositions : Fuzzer Ball
+allBallPositions =
     Fuzz.map2 serializePosition
         (Fuzz.intRange 0 400)
         (Fuzz.intRange 0 399)
