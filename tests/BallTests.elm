@@ -3,6 +3,7 @@ module BallTests exposing (ballUpdates)
 import Constants exposing (..)
 import Expect exposing (..)
 import Fuzz exposing (Fuzzer)
+import Fuzzers exposing (..)
 import Model exposing (..)
 import Test exposing (Test, describe, fuzz, test)
 
@@ -10,7 +11,7 @@ import Test exposing (Test, describe, fuzz, test)
 ballUpdates : Test
 ballUpdates =
     describe "Test ball updates"
-        [ fuzz allBallPositions "fuzz test" <|
+        [ fuzz allBallPositions "Velcoity is added to ball" <|
             \ballPosition ->
                 let
                     updatedPosition =
@@ -55,17 +56,3 @@ ballUpdates =
                     |> updateBallVelocity
                     |> Expect.equal { model | ballPosition = { x = 200, y = 400 }, ballVelocity = { x = 0, y = 0 } }
         ]
-
-
-allBallPositions : Fuzzer Ball
-allBallPositions =
-    Fuzz.map2 serializePosition
-        (Fuzz.intRange 0 400)
-        (Fuzz.intRange 0 399)
-
-
-serializePosition : Int -> Int -> Ball
-serializePosition xPos yPos =
-    { x = xPos
-    , y = yPos
-    }
