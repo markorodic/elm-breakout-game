@@ -11,7 +11,7 @@ import Test exposing (Test, describe, fuzz, test)
 ballUpdates : Test
 ballUpdates =
     describe "Test ball updates"
-        [ fuzz allBallPositions "Velcoity is added to ball" <|
+        [ fuzz allBallPositions "Velocity is added to ball position" <|
             \ballPosition ->
                 let
                     updatedPosition =
@@ -20,6 +20,11 @@ ballUpdates =
                 { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
                     |> updateBallPosition
                     |> Expect.equal { model | ballPosition = updatedPosition, ballVelocity = { x = 4, y = 4 } }
+        , fuzz nonCollidingBallPositions "Velocity does not change when ball is within game bounds" <|
+            \ballPosition ->
+                { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
+                    |> updateBallVelocity
+                    |> Expect.equal { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
         , test "Change ball y velocity to positive on left wall collision" <|
             \() ->
                 { model | ballPosition = { x = 0, y = 100 }, ballVelocity = { x = -4, y = 4 } }
