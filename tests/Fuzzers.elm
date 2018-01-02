@@ -4,18 +4,18 @@ import Fuzz exposing (Fuzzer)
 import Model exposing (..)
 
 
-allBallPositions : Fuzzer Ball
-allBallPositions =
+ballInPlay : Fuzzer Ball
+ballInPlay =
     Fuzz.map2 serializePosition
         (Fuzz.intRange 0 400)
         (Fuzz.intRange 0 399)
 
 
-nonCollidingBallPositions : Fuzzer Ball
-nonCollidingBallPositions =
+ballNotColliding : Fuzzer Ball
+ballNotColliding =
     Fuzz.map2 serializePosition
-        ballPositionX.notColliding
-        ballPositionY.notColliding
+        ballPositionX.isNotColliding
+        ballPositionY.isNotColliding
 
 
 serializePosition : Int -> Int -> Ball
@@ -27,11 +27,11 @@ serializePosition xPos yPos =
 
 ballPositionX =
     { moving = Fuzz.intRange 0 400
-    , notColliding = Fuzz.intRange 1 399
+    , isNotColliding = Fuzz.intRange 1 399
     }
 
 
 ballPositionY =
     { moving = Fuzz.intRange 0 399
-    , notColliding = Fuzz.intRange 72 394
+    , isNotColliding = Fuzz.intRange 72 394
     }
