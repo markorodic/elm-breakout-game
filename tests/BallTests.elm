@@ -43,11 +43,11 @@ ballUpdates =
                     { model | ballPosition = ballPosition, ballVelocity = { x = -4, y = 4 } }
                         |> updateBallVelocity
                         |> Expect.equal { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
-            , test "X velocity changes to negative on right wall collision" <|
-                \() ->
-                    { model | ballPosition = { x = 400, y = 100 }, ballVelocity = { x = 4, y = 4 } }
+            , fuzz ballCollidingRightWall "X velocity changes to negative on right wall collision" <|
+                \ballPosition ->
+                    { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
                         |> updateBallVelocity
-                        |> Expect.equal { model | ballPosition = { x = 400, y = 100 }, ballVelocity = { x = -4, y = 4 } }
+                        |> Expect.equal { model | ballPosition = ballPosition, ballVelocity = { x = -4, y = 4 } }
             , test "Y velocity changes to positive on ceiling collision" <|
                 \() ->
                     { model | ballPosition = { x = 200, y = 0 }, ballVelocity = { x = 4, y = -4 } }
