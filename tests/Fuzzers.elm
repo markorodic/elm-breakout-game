@@ -18,6 +18,13 @@ ballNotColliding =
         ballPositionY.isNotColliding
 
 
+ballCollidingLeftWall : Fuzzer Ball
+ballCollidingLeftWall =
+    Fuzz.map2 serializePosition
+        ballPositionX.isCollidingLeftWall
+        ballPositionY.isNotColliding
+
+
 serializePosition : Int -> Int -> Ball
 serializePosition xPos yPos =
     { x = xPos
@@ -26,12 +33,13 @@ serializePosition xPos yPos =
 
 
 ballPositionX =
-    { moving = Fuzz.intRange 0 400
+    { isInPlay = Fuzz.intRange 0 400
     , isNotColliding = Fuzz.intRange 1 399
+    , isCollidingLeftWall = Fuzz.constant 0
     }
 
 
 ballPositionY =
-    { moving = Fuzz.intRange 0 399
+    { isInPlay = Fuzz.intRange 0 399
     , isNotColliding = Fuzz.intRange 72 394
     }
