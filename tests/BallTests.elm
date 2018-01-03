@@ -53,11 +53,11 @@ ballUpdates =
                     { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = -4 } }
                         |> updateBallVelocity
                         |> Expect.equal { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
-            , test "Y velocity changes to positive on paddle collision" <|
-                \() ->
-                    { model | ballPosition = { x = 75, y = 395 }, ballVelocity = { x = 4, y = 4 }, paddleX = 70 }
+            , fuzz ballCollidingPaddle "Y velocity changes to positive on paddle collision" <|
+                \position ->
+                    { model | ballPosition = position.ball, ballVelocity = { x = 4, y = 4 }, paddleX = position.paddle }
                         |> updateBallVelocity
-                        |> Expect.equal { model | ballPosition = { x = 75, y = 395 }, ballVelocity = { x = 4, y = -4 }, paddleX = 70 }
+                        |> Expect.equal { model | ballPosition = position.ball, ballVelocity = { x = 4, y = -4 }, paddleX = position.paddle }
             , test "Y velocity changes to positive on brick collision" <|
                 \() ->
                     { model | ballPosition = { x = 11, y = 6 }, ballVelocity = { x = 4, y = -4 } }
