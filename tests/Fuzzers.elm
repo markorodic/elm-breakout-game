@@ -6,54 +6,62 @@ import Model exposing (..)
 
 ballInPlay : Fuzzer Ball
 ballInPlay =
-    Fuzz.map2 serializeBallPosition
+    Fuzz.map2 deserializeBallPosition
         (Fuzz.intRange 0 400)
         (Fuzz.intRange 0 399)
 
 
 ballNotColliding : Fuzzer Ball
 ballNotColliding =
-    Fuzz.map2 serializeBallPosition
+    Fuzz.map2 deserializeBallPosition
         ballPositionX.isNotColliding
         ballPositionY.isNotColliding
 
 
 ballCollidingLeftWall : Fuzzer Ball
 ballCollidingLeftWall =
-    Fuzz.map2 serializeBallPosition
+    Fuzz.map2 deserializeBallPosition
         ballPositionX.isCollidingLeftWall
         ballPositionY.isNotColliding
 
 
 ballCollidingRightWall : Fuzzer Ball
 ballCollidingRightWall =
-    Fuzz.map2 serializeBallPosition
+    Fuzz.map2 deserializeBallPosition
         ballPositionX.isCollidingRightWall
         ballPositionY.isNotColliding
 
 
 ballCollidingCeiling : Fuzzer Ball
 ballCollidingCeiling =
-    Fuzz.map2 serializeBallPosition
+    Fuzz.map2 deserializeBallPosition
         ballPositionX.isNotColliding
         ballPositionY.isCollidingCeiling
 
 
+ballCollidingPaddle : Fuzzer PaddleBall
 ballCollidingPaddle =
-    Fuzz.map3 serializeBallPaddlePosition
+    Fuzz.map3 deserializeBallPaddlePosition
         ballPositionX.isCollidingPaddle
         ballPositionY.isCollidingPaddle
         paddlePosition
 
 
-serializeBallPosition : Int -> Int -> Ball
-serializeBallPosition xPos yPos =
+deserializeBallPosition : Int -> Int -> Ball
+deserializeBallPosition xPos yPos =
     { x = xPos
     , y = yPos
     }
 
 
-serializeBallPaddlePosition xPos yPos paddlePos =
+type alias PaddleBall =
+    { ball : Ball
+    , paddle : Int
+    }
+
+
+deserializeBallPaddlePosition : Int -> Int -> Int -> PaddleBall
+deserializeBallPaddlePosition xPos yPos paddlePos =
     { ball = { x = xPos, y = yPos }
     , paddle = paddlePos
     }
