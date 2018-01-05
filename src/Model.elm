@@ -149,12 +149,17 @@ doesBallHitCeiling ball =
 
 doesBallHitPaddle : Model -> Bool
 doesBallHitPaddle model =
-    model.ballPosition.x
+    let
+        ballCenter =
+            model.ballPosition.x + round (0.5 * ballAttributes.width)
+    in
+    ballCenter
         > model.paddleX
-        && model.ballPosition.x
+        && ballCenter
         < model.paddleX
         + paddleAttributes.width
         && model.ballPosition.y
+        + ballAttributes.height
         >= paddleAttributes.yPosition
 
 
