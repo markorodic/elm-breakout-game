@@ -6,6 +6,7 @@ import Html exposing (Html, div, program, span, text)
 import Html.Attributes exposing (style)
 import Messages exposing (..)
 import Model exposing (..)
+import StyleSheet exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
