@@ -187,8 +187,11 @@ hasBallHitBrick ball brick =
 
         brickEndY =
             brick.position.y + brickAttributes.height
+
+        ballCenterX =
+            ball.x + round (0.5 * ballAttributes.width)
     in
-    ball.x > brickStartX && ball.x < brickEndX && ball.y > brickStartY && ball.y < brickEndY
+    ballCenterX > brickStartX && ballCenterX < brickEndX && ball.y + ballAttributes.height > brickStartY && ball.y < brickEndY
 
 
 updateGame : Model -> Model
