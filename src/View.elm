@@ -3,14 +3,11 @@ module View exposing (view)
 import Bricks exposing (..)
 import Constants exposing (..)
 import Element exposing (column, el, empty, layout, link, row, screen, text, within)
-import Element.Attributes exposing (alignBottom, alignRight, center, height, padding, spacing, spacingXY, verticalCenter, width)
-import Html exposing (Html, div, program, span, text)
-import Html.Attributes exposing (style)
+import Element.Attributes exposing (px, percent, alignBottom, alignRight, center, height, padding, spacing, spacingXY, verticalCenter, width)
+import Html exposing (Html)
 import Messages exposing (..)
 import Model exposing (..)
 import StyleSheet exposing (..)
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
 
 
 -- VIEW
@@ -26,16 +23,16 @@ view model =
     in
     layout stylesheet <|
         column Background
-            []
+            [ center, height (px 400), width (percent 100) ]
             [ row Text
-                []
-                [ Element.text "Lives: "
-                , Element.text (toString model.score)
-                , Element.text "Score: "
-                , Element.text (toString model.lives)
+                [ height (px 50), spacing 20 ]
+                [ text "Lives: "
+                , text (toString model.score)
+                , text "Score: "
+                , text (toString model.lives)
                 ]
             , column Game
-                [ Element.Attributes.width (Element.Attributes.px 400), Element.Attributes.height (Element.Attributes.px 400) ]
+                [ width (px 500), height (px 300) ]
                 [ empty ]
                 |> within
                     nodes

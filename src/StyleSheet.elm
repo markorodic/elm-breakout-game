@@ -15,13 +15,21 @@ type MyStyles
     | Ball
 
 
+colours =
+    { grey = Color.rgb 142 142 142
+    }
+
+
 stylesheet =
     Style.styleSheet
         [ Style.style Background
-            [ Color.text black
+            [ Color.text colours.grey
+            , Color.background black
             ]
         , Style.style Game
-            [ Color.background grey
+            [ Border.all 25
+            , Border.bottom 0
+            , Color.border colours.grey
             ]
         , Style.style Ball
             [ Color.background black

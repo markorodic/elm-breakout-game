@@ -2,7 +2,7 @@ module Constants exposing (..)
 
 
 gameAttributes =
-    { width = 400
+    { width = 500
     , height = 400
     }
 
