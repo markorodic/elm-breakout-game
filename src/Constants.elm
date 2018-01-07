@@ -8,15 +8,15 @@ gameAttributes =
 
 
 paddleAttributes =
-    { width = 30
-    , height = 3
-    , yPosition = 395
+    { width = 60
+    , height = 5
+    , yPosition = 270
     }
 
 
 ballAttributes =
-    { width = 3
-    , height = 3
+    { width = 5
+    , height = 5
     , velocity = 4
     , startPosition = { x = 200, y = 200 }
     }

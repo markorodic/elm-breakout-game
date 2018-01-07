@@ -18,6 +18,7 @@ type MyStyles
 
 colours =
     { grey = Color.rgb 142 142 142
+    , red = Color.rgb 198 73 75
     }
 
 
@@ -38,10 +39,10 @@ stylesheet =
             , Color.border colours.grey
             ]
         , Style.style Ball
-            [ Color.background black
+            [ Color.background colours.red
             ]
         , Style.style Paddle
-            [ Color.background black
+            [ Color.background colours.red
             ]
         , Style.style Bricks
             [ Color.background black
