@@ -21,13 +21,13 @@ type alias Model =
 
 model : Model
 model =
-    { paddleX = 0
+    { paddleX = paddleAttributes.startPosition
     , ballPosition = ballAttributes.startPosition
     , ballVelocity = { x = 0, y = 0 }
     , bricks = initBricks
     , playing = False
-    , score = 0
-    , lives = 3
+    , score = gameAttributes.score
+    , lives = gameAttributes.lives
     }
 
 
