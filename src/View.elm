@@ -25,10 +25,8 @@ view model =
         column Background
             [ center, height (px 400), width (percent 100) ]
             [ row Text
-                [ height (px 50), spacing 20 ]
-                [ text "Lives: "
-                , text (toString model.score)
-                , text "Score: "
+                [ height (px 52), spacing 80, alignBottom ]
+                [ text (toString model.score)
                 , text (toString model.lives)
                 ]
             , column Game

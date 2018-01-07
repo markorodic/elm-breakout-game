@@ -4,6 +4,7 @@ import Color exposing (..)
 import Style exposing (..)
 import Style.Border as Border
 import Style.Color as Color
+import Style.Font as Font
 
 
 type MyStyles
@@ -25,6 +26,11 @@ stylesheet =
         [ Style.style Background
             [ Color.text colours.grey
             , Color.background black
+            ]
+        , Style.style Text
+            [ Font.size 40
+            , Font.typeface
+                [ Font.importUrl { url = "https://fonts.googleapis.com/css?family=Press+Start+2P", name = "Press Start 2P" } ]
             ]
         , Style.style Game
             [ Border.all 25
