@@ -10,6 +10,7 @@ emptyBrickList =
             List.repeat brickLayout.numberOfBricks
                 { position = { x = 0, y = 0 }
                 , size = { width = brickAttributes.width, height = brickAttributes.height }
+                , rank = 0
                 }
     in
     initialBricks
@@ -31,13 +32,17 @@ assignBrickPosition index b =
 
         y =
             (index // brickLayout.bricksPerLine) * (b.size.height + brickLayout.padding) + brickLayout.yMargin
+
+        giveRank =
+            index // brickLayout.bricksPerLine
     in
-    { b | position = { x = x, y = y } }
+    { b | position = { x = x, y = y }, rank = giveRank }
 
 
 type alias Brick =
     { position : Position
     , size : Size
+    , rank : Int
     }
 
 

@@ -2,7 +2,7 @@ module Constants exposing (..)
 
 
 gameAttributes =
-    { width = 500
+    { width = 448
     , height = 400
     }
 
@@ -23,15 +23,15 @@ ballAttributes =
 
 
 brickAttributes =
-    { width = 20
-    , height = 7
+    { width = 32
+    , height = 10
     }
 
 
 brickLayout =
-    { numberOfBricks = 90
-    , xMargin = 10
-    , yMargin = 5
-    , padding = 5
-    , bricksPerLine = 15
+    { numberOfBricks = 84
+    , xMargin = 0
+    , yMargin = 40
+    , padding = 0
+    , bricksPerLine = 14
     }
