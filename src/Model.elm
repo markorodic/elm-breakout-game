@@ -222,10 +222,27 @@ keyDown : ArrowKey -> Model -> Model
 keyDown key model =
     case key of
         LeftKey ->
-            { model | paddleX = model.paddleX - 5 }
+            let
+                updatePaddleLeftPos =
+                    if model.paddleX < 5 then
+                        0
+                    else
+                        model.paddleX - 5
+            in
+            { model | paddleX = updatePaddleLeftPos }
 
         RightKey ->
-            { model | paddleX = model.paddleX + 5 }
+            let
+                paddlePositionEnd =
+                    gameAttributes.width - paddleAttributes.width
+
+                updatePaddleRightPos =
+                    if model.paddleX > (paddlePositionEnd - 5) then
+                        paddlePositionEnd
+                    else
+                        model.paddleX + 5
+            in
+            { model | paddleX = updatePaddleRightPos }
 
         SpaceKey ->
             let
