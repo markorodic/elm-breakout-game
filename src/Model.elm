@@ -13,7 +13,7 @@ type alias Model =
     , ballPosition : Ball
     , ballVelocity : Velocity
     , bricks : List Brick
-    , playing : Bool
+    , playingStatus : Bool
     , score : Int
     , lives : Int
     }
@@ -25,7 +25,7 @@ model =
     , ballPosition = ballAttributes.startPosition
     , ballVelocity = { x = 0, y = 0 }
     , bricks = initBricks
-    , playing = False
+    , playingStatus = False
     , score = gameAttributes.score
     , lives = gameAttributes.lives
     }
@@ -208,8 +208,14 @@ updateGame model =
                 model.score + 1
             else
                 model.score
+
+        updatePlayingStatus =
+            if hasBallFallen model.ballPosition then
+                False
+            else
+                model.playingStatus
     in
-    { model | lives = updateLives, score = updateScore }
+    { model | lives = updateLives, score = updateScore, playingStatus = updatePlayingStatus }
 
 
 keyDown : ArrowKey -> Model -> Model
@@ -232,8 +238,8 @@ keyDown key model =
                 newVelocityY =
                     { currentVelocity | y = currentVelocity.y * -1 }
             in
-            if not model.playing then
-                { model | ballPosition = ballAttributes.startPosition, ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, playing = True }
+            if not model.playingStatus then
+                { model | ballPosition = ballAttributes.startPosition, ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, playingStatus = True }
             else
                 model
 
