@@ -112,12 +112,16 @@ updateBallVelocity model =
         updateVelocityX =
             if doesBallHitWall ballPosition then
                 ballVelocity.x * -1
+            else if doesBallHitCeiling ballPosition then
+                round (toFloat ballVelocity.x * 1.2)
             else
                 ballVelocity.x
 
         updateVelocityY =
-            if doesBallHitCeiling ballPosition || doesBallHitPaddle model || doesBallHitBrick model then
+            if doesBallHitPaddle model || doesBallHitBrick model then
                 ballVelocity.y * -1
+            else if doesBallHitCeiling ballPosition then
+                round (toFloat ballVelocity.y * -1.2)
             else
                 ballVelocity.y
 
