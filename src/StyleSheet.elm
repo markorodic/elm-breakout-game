@@ -8,7 +8,8 @@ import Style.Font as Font
 
 
 type MyStyles
-    = Background
+    = WindowBackground
+    | GameBackground
     | Text
     | Game
     | Paddle
@@ -26,7 +27,8 @@ type Ranks
 
 
 colours =
-    { grey = Color.rgb 142 142 142
+    { black = Color.rgb 0 0 0
+    , grey = Color.rgb 142 142 142
     , red = Color.rgb 198 73 75
     , tomato = Color.rgb 196 108 64
     , orange = Color.rgb 179 121 56
@@ -38,18 +40,22 @@ colours =
 
 stylesheet =
     Style.styleSheet
-        [ Style.style Background
-            [ Color.text colours.grey
-            , Color.background black
+        [ Style.style WindowBackground
+            [ Color.background colours.black
             ]
         , Style.style Text
-            [ Font.size 40
+            [ Color.background colours.grey
+            , Color.text colours.black
+            , Font.size 40
+            , Color.border colours.grey
             , Font.typeface
                 [ Font.importUrl { url = "https://fonts.googleapis.com/css?family=Press+Start+2P", name = "Press Start 2P" } ]
             ]
         , Style.style Game
-            [ Border.all 26
+            [ Border.all 18
             , Border.bottom 0
+            , Border.top 0
+            , Color.background colours.black
             , Color.border colours.grey
             ]
         , Style.style Ball

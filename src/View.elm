@@ -2,8 +2,8 @@ module View exposing (view)
 
 import Bricks exposing (..)
 import Constants exposing (..)
-import Element exposing (column, el, empty, layout, link, row, screen, text, within)
-import Element.Attributes exposing (px, percent, alignBottom, alignRight, center, height, padding, spacing, spacingXY, verticalCenter, width)
+import Element exposing (column, el, empty, layout, link, modal, row, screen, text, within)
+import Element.Attributes exposing (alignBottom, center, fillPortion, height, padding, percent, px, spacing, spacingXY, verticalCenter, width)
 import Html exposing (Html)
 import Messages exposing (..)
 import Model exposing (..)
@@ -22,19 +22,28 @@ view model =
                 :: List.map displayBricks model.bricks
     in
     layout stylesheet <|
-        column Background
-            [ center, height (px 400), width (percent 100) ]
-            [ row Text
-                [ height (px 52), spacing 80, alignBottom ]
-                [ text (toString model.score)
-                , text (toString model.lives)
-                ]
-            , column Game
-                [ width (px 500), height (px 300) ]
-                [ empty ]
-                |> within
-                    nodes
-            ]
+        screen
+            (el WindowBackground
+                [ height (fillPortion 1), width (percent 100) ]
+                (modal
+                    GameBackground
+                    [ center, verticalCenter, width (percent 100) ]
+                    (column GameBackground
+                        [ center, height (percent 100), width (percent 100) ]
+                        [ row Text
+                            [ height (px 52), width (px 400), center, spacing 80, alignBottom ]
+                            [ text (toString model.score)
+                            , text (toString model.lives)
+                            ]
+                        , column Game
+                            [ width (px 400), height (px 400) ]
+                            [ empty ]
+                            |> within
+                                nodes
+                        ]
+                    )
+                )
+            )
 
 
 displayBall x y =
