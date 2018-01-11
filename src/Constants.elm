@@ -2,7 +2,7 @@ module Constants exposing (..)
 
 
 gameAttributes =
-    { width = 448
+    { width = 364
     , height = 400
     , score = 0
     , lives = 3
@@ -12,8 +12,8 @@ gameAttributes =
 paddleAttributes =
     { width = 60
     , height = 5
-    , yPosition = 270
-    , startPosition = 194
+    , yPosition = 395
+    , startPosition = round 152
     }
 
 
@@ -21,12 +21,12 @@ ballAttributes =
     { width = 5
     , height = 5
     , velocity = 4
-    , startPosition = { x = 224, y = 150 }
+    , startPosition = { x = 180, y = 200 }
     }
 
 
 brickAttributes =
-    { width = 32
+    { width = 26
     , height = 10
     }
 
