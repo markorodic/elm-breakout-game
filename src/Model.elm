@@ -2,7 +2,8 @@ module Model exposing (..)
 
 import Bricks exposing (..)
 import Constants exposing (..)
-import Messages exposing (ArrowKey(..), Msg(..))
+import Keyboard exposing (KeyCode)
+import Messages exposing (Msg(..))
 
 
 -- MODEL
@@ -55,8 +56,8 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ArrowPressed key ->
-            ( keyDown key model, Cmd.none )
+        KeyDown keyCode ->
+            ( keyDown keyCode model, Cmd.none )
 
         TickUpdate dt ->
             ( gameLoop model, Cmd.none )
@@ -222,47 +223,59 @@ updateGame model =
     { model | lives = updateLives, score = updateScore, playingStatus = updatePlayingStatus }
 
 
-keyDown : ArrowKey -> Model -> Model
-keyDown key model =
-    case key of
-        LeftKey ->
-            let
-                updatePaddleLeftPos =
-                    if model.paddleX < 5 then
-                        0
-                    else
-                        model.paddleX - 5
-            in
-            { model | paddleX = updatePaddleLeftPos }
+keyDown : KeyCode -> Model -> Model
+keyDown keyCode model =
+    case keyCode of
+        37 ->
+            movePaddleLeft model
 
-        RightKey ->
-            let
-                paddlePositionEnd =
-                    gameAttributes.width - paddleAttributes.width
+        39 ->
+            movePaddleRight model
 
-                updatePaddleRightPos =
-                    if model.paddleX > (paddlePositionEnd - 5) then
-                        paddlePositionEnd
-                    else
-                        model.paddleX + 5
-            in
-            { model | paddleX = updatePaddleRightPos }
-
-        SpaceKey ->
-            let
-                currentVelocity =
-                    model.ballVelocity
-
-                newVelocityX =
-                    { currentVelocity | x = currentVelocity.x * -1 }
-
-                newVelocityY =
-                    { currentVelocity | y = currentVelocity.y * -1 }
-            in
-            if not model.playingStatus then
-                { model | ballPosition = ballAttributes.startPosition, ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, playingStatus = True }
-            else
-                model
+        32 ->
+            launchBall model
 
         _ ->
             model
+
+
+launchBall model =
+    let
+        currentVelocity =
+            model.ballVelocity
+
+        newVelocityX =
+            { currentVelocity | x = currentVelocity.x * -1 }
+
+        newVelocityY =
+            { currentVelocity | y = currentVelocity.y * -1 }
+    in
+    if not model.playingStatus then
+        { model | ballPosition = ballAttributes.startPosition, ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, playingStatus = True }
+    else
+        model
+
+
+movePaddleLeft model =
+    let
+        updatePaddleLeftPos =
+            if model.paddleX < 5 then
+                0
+            else
+                model.paddleX - 10
+    in
+    { model | paddleX = updatePaddleLeftPos }
+
+
+movePaddleRight model =
+    let
+        paddlePositionEnd =
+            gameAttributes.width - paddleAttributes.width
+
+        updatePaddleRightPos =
+            if model.paddleX > (paddlePositionEnd - 5) then
+                paddlePositionEnd
+            else
+                model.paddleX + 10
+    in
+    { model | paddleX = updatePaddleRightPos }

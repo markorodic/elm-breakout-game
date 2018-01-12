@@ -1,5 +1,6 @@
 module Subscriptions exposing (subscriptions)
 
+import AnimationFrame exposing (..)
 import Keyboard
 import Messages exposing (..)
 import Model exposing (..)
@@ -16,25 +17,9 @@ subscriptions model =
 
 tick : Sub Msg
 tick =
-    Time.every (100 * Time.millisecond) TickUpdate
+    AnimationFrame.diffs TickUpdate
 
 
 arrowChanged : Sub Msg
 arrowChanged =
-    Keyboard.downs toArrowChanged
-
-
-toArrowChanged : Keyboard.KeyCode -> Msg
-toArrowChanged code =
-    case code of
-        37 ->
-            ArrowPressed LeftKey
-
-        39 ->
-            ArrowPressed RightKey
-
-        32 ->
-            ArrowPressed SpaceKey
-
-        default ->
-            ArrowPressed NoKey
+    Keyboard.downs KeyDown

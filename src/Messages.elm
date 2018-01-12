@@ -1,15 +1,9 @@
-module Messages exposing (ArrowKey(..), Msg(..))
+module Messages exposing (Msg(..))
 
+import Keyboard exposing (KeyCode)
 import Time exposing (Time)
 
 
 type Msg
-    = ArrowPressed ArrowKey
+    = KeyDown KeyCode
     | TickUpdate Time
-
-
-type ArrowKey
-    = NoKey
-    | LeftKey
-    | RightKey
-    | SpaceKey
