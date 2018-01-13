@@ -57,6 +57,8 @@ stylesheet =
             , Border.top 0
             , Color.background colours.black
             , Color.border colours.grey
+            , Color.text white
+            , Font.size 30
             ]
         , Style.style Ball
             [ Color.background colours.red

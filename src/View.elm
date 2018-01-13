@@ -36,8 +36,12 @@ view model =
                             , text (toString model.lives)
                             ]
                         , column Game
-                            [ width (px 400), height (px 400) ]
-                            [ empty ]
+                            [ center, verticalCenter, width (px 400), height (px 400) ]
+                            [ if model.lives < 0 then
+                                text "Game Over"
+                              else
+                                empty
+                            ]
                             |> within
                                 nodes
                         ]
