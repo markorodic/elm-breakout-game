@@ -33,8 +33,13 @@ brickAttributes =
 
 brickLayout =
     { numberOfBricks = 84
-    , xMargin = 0
     , yMargin = 30
-    , padding = 0
     , bricksPerLine = 14
+    }
+
+
+brickPoints =
+    { low = 1
+    , middle = 4
+    , high = 7
     }

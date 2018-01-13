@@ -65,31 +65,32 @@ displayBricks b =
         (toFloat b.position.y)
         (toFloat b.size.width)
         (toFloat b.size.height)
-        (Bricks (assignBrickColour b.rank))
+        (Bricks (assignBrickColour b.row))
 
 
-assignBrickColour rank =
-    case rank of
+assignBrickColour : Int -> Colours
+assignBrickColour row =
+    case row of
         0 ->
-            One
+            Red
 
         1 ->
-            Two
+            Tomato
 
         2 ->
-            Three
+            Orange
 
         3 ->
-            Four
+            Yellow
 
         4 ->
-            Five
+            Green
 
         5 ->
-            Six
+            Purple
 
         _ ->
-            One
+            Purple
 
 
 makeBlock x_ y_ width_ height_ styleClass =

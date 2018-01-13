@@ -210,7 +210,7 @@ updateGame model =
 
         updateScore =
             if doesBallHitBrick model then
-                model.score + 1
+                model.score + brickScore model.ballPosition
             else
                 model.score
 
@@ -221,6 +221,16 @@ updateGame model =
                 model.playingStatus
     in
     { model | lives = updateLives, score = updateScore, playingStatus = updatePlayingStatus }
+
+
+brickScore : Ball -> Int
+brickScore ball =
+    if ball.y < (brickLayout.yMargin + brickAttributes.height * 2) then
+        brickPoints.high
+    else if ball.y < (brickLayout.yMargin + brickAttributes.height * 4) then
+        brickPoints.middle
+    else
+        brickPoints.low
 
 
 keyDown : KeyCode -> Model -> Model

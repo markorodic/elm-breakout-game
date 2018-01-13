@@ -14,16 +14,16 @@ type MyStyles
     | Game
     | Paddle
     | Ball
-    | Bricks Ranks
+    | Bricks Colours
 
 
-type Ranks
-    = One
-    | Two
-    | Three
-    | Four
-    | Five
-    | Six
+type Colours
+    = Purple
+    | Green
+    | Yellow
+    | Orange
+    | Tomato
+    | Red
 
 
 colours =
@@ -64,22 +64,22 @@ stylesheet =
         , Style.style Paddle
             [ Color.background colours.red
             ]
-        , Style.style (Bricks One)
-            [ Color.background colours.red
+        , Style.style (Bricks Purple)
+            [ Color.background colours.purple
             ]
-        , Style.style (Bricks Two)
-            [ Color.background colours.tomato
-            ]
-        , Style.style (Bricks Three)
-            [ Color.background colours.orange
-            ]
-        , Style.style (Bricks Four)
-            [ Color.background colours.yellow
-            ]
-        , Style.style (Bricks Five)
+        , Style.style (Bricks Green)
             [ Color.background colours.green
             ]
-        , Style.style (Bricks Six)
-            [ Color.background colours.purple
+        , Style.style (Bricks Yellow)
+            [ Color.background colours.yellow
+            ]
+        , Style.style (Bricks Orange)
+            [ Color.background colours.orange
+            ]
+        , Style.style (Bricks Tomato)
+            [ Color.background colours.tomato
+            ]
+        , Style.style (Bricks Red)
+            [ Color.background colours.red
             ]
         ]
