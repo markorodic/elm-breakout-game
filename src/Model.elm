@@ -14,9 +14,9 @@ type alias Model =
     , ballPosition : Ball
     , ballVelocity : Velocity
     , bricks : List Brick
-    , playingStatus : Bool
     , score : Int
     , lives : Int
+    , gameState : GameState
     }
 
 
@@ -26,9 +26,9 @@ model =
     , ballPosition = ballAttributes.startPosition
     , ballVelocity = { x = 0, y = 0 }
     , bricks = initBricks
-    , playingStatus = False
     , score = gameAttributes.score
     , lives = gameAttributes.lives
+    , gameState = StartGame
     }
 
 
@@ -42,6 +42,13 @@ type alias Velocity =
     { x : Int
     , y : Int
     }
+
+
+type GameState
+    = StartGame
+    | Playing
+    | Paused
+    | GameOver
 
 
 init : ( Model, Cmd Msg )
@@ -214,13 +221,13 @@ updateGame model =
             else
                 model.score
 
-        updatePlayingStatus =
+        updateGameState =
             if hasBallFallen model.ballPosition then
-                False
+                Paused
             else
-                model.playingStatus
+                model.gameState
     in
-    { model | lives = updateLives, score = updateScore, playingStatus = updatePlayingStatus }
+    { model | lives = updateLives, score = updateScore, gameState = updateGameState }
 
 
 brickScore : Ball -> Int
@@ -260,8 +267,8 @@ launchBall model =
         newVelocityY =
             { currentVelocity | y = currentVelocity.y * -1 }
     in
-    if not model.playingStatus then
-        { model | ballPosition = ballAttributes.startPosition, ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, playingStatus = True }
+    if model.gameState == Paused || model.gameState == StartGame then
+        { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
     else
         model
 
