@@ -37,7 +37,7 @@ view model =
                             ]
                         , column Game
                             [ center, verticalCenter, width (px 400), height (px 400) ]
-                            [ if model.lives < 0 then
+                            [ if model.gameState == Dead then
                                 text "Game Over"
                               else
                                 empty

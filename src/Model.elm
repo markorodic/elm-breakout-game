@@ -28,7 +28,7 @@ model =
     , bricks = initBricks
     , score = gameAttributes.score
     , lives = gameAttributes.lives
-    , gameState = StartGame
+    , gameState = Start
     }
 
 
@@ -45,10 +45,10 @@ type alias Velocity =
 
 
 type GameState
-    = StartGame
+    = Start
     | Playing
-    | Paused
-    | GameOver
+    | BallFall
+    | Dead
 
 
 init : ( Model, Cmd Msg )
@@ -82,18 +82,12 @@ gameLoop model =
 updateBallPosition : Model -> Model
 updateBallPosition model =
     let
-        ballPos =
-            model.ballPosition
-
-        ballVel =
-            model.ballVelocity
-
         updatePosition =
-            if hasBallFallen ballPos then
+            if hasBallFallen model then
                 ballAttributes.startPosition
             else
-                { x = ballPos.x + ballVel.x
-                , y = ballPos.y + ballVel.y
+                { x = model.ballPosition.x + model.ballVelocity.x
+                , y = model.ballPosition.y + model.ballVelocity.y
                 }
     in
     { model | ballPosition = updatePosition }
@@ -134,7 +128,7 @@ updateBallVelocity model =
                 ballVelocity.y
 
         updateVelocity =
-            if hasBallFallen ballPosition then
+            if hasBallFallen model then
                 { x = 0, y = 0 }
             else
                 { x = updateVelocityX
@@ -144,9 +138,9 @@ updateBallVelocity model =
     { model | ballVelocity = updateVelocity }
 
 
-hasBallFallen : Ball -> Bool
-hasBallFallen ball =
-    ball.y >= gameAttributes.height
+hasBallFallen : Model -> Bool
+hasBallFallen model =
+    model.ballPosition.y >= gameAttributes.height && model.gameState /= Dead
 
 
 doesBallHitWall : Ball -> Bool
@@ -210,8 +204,10 @@ updateGame : Model -> Model
 updateGame model =
     let
         updateLives =
-            if hasBallFallen model.ballPosition then
+            if hasBallFallen model then
                 model.lives - 1
+            else if model.gameState == Start then
+                3
             else
                 model.lives
 
@@ -222,8 +218,10 @@ updateGame model =
                 model.score
 
         updateGameState =
-            if hasBallFallen model.ballPosition then
-                Paused
+            if hasBallFallen model then
+                BallFall
+            else if model.lives == 0 && model.gameState /= Start then
+                Dead
             else
                 model.gameState
     in
@@ -250,13 +248,14 @@ keyDown keyCode model =
             movePaddleRight model
 
         32 ->
-            launchBall model
+            startGame model
 
         _ ->
             model
 
 
-launchBall model =
+startGame : Model -> Model
+startGame model =
     let
         currentVelocity =
             model.ballVelocity
@@ -267,12 +266,21 @@ launchBall model =
         newVelocityY =
             { currentVelocity | y = currentVelocity.y * -1 }
     in
-    if model.gameState == Paused || model.gameState == StartGame then
-        { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
-    else
-        model
+    case model.gameState of
+        Start ->
+            { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
+
+        Playing ->
+            model
+
+        BallFall ->
+            { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
+
+        Dead ->
+            { model | gameState = Start }
 
 
+movePaddleLeft : Model -> Model
 movePaddleLeft model =
     let
         updatePaddleLeftPos =
@@ -284,6 +292,7 @@ movePaddleLeft model =
     { model | paddleX = updatePaddleLeftPos }
 
 
+movePaddleRight : Model -> Model
 movePaddleRight model =
     let
         paddlePositionEnd =
