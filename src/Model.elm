@@ -47,6 +47,7 @@ type alias Velocity =
 type GameState
     = Start
     | Playing
+    | Paused
     | BallFall
     | Dead
 
@@ -271,7 +272,10 @@ startGame model =
             { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
 
         Playing ->
-            model
+            { model | ballVelocity = { x = 0, y = 0 }, gameState = Paused }
+
+        Paused ->
+            { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
 
         BallFall ->
             { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }

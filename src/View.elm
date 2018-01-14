@@ -39,6 +39,8 @@ view model =
                             [ center, verticalCenter, width (px 400), height (px 400) ]
                             [ if model.gameState == Dead then
                                 text "Game Over"
+                              else if model.gameState == Paused then
+                                text "Paused"
                               else
                                 empty
                             ]
