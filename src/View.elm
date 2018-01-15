@@ -38,9 +38,15 @@ view model =
                         , column Game
                             [ center, verticalCenter, width (px 400), height (px 400) ]
                             [ if model.gameState == Dead then
-                                text "Game Over"
+                                column GameOver
+                                    [ center, spacing 10 ]
+                                    [ text "Game Over"
+                                    , text ("Score:" ++ toString model.score)
+                                    ]
                               else if model.gameState == Paused then
-                                text "Paused"
+                                el GameOver
+                                    []
+                                    (text "Paused")
                               else
                                 empty
                             ]

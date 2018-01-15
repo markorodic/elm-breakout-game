@@ -15,6 +15,7 @@ type MyStyles
     | Paddle
     | Ball
     | Bricks Colours
+    | GameOver
 
 
 type Colours
@@ -43,6 +44,8 @@ stylesheet =
         [ Style.style WindowBackground
             [ Color.background colours.black
             ]
+        , Style.style GameBackground
+            []
         , Style.style Text
             [ Color.background colours.grey
             , Color.text colours.black
@@ -59,6 +62,11 @@ stylesheet =
             , Color.border colours.grey
             , Color.text white
             , Font.size 30
+            ]
+        , Style.style GameOver
+            [ Font.size 30
+            , Font.typeface
+                [ Font.importUrl { url = "https://fonts.googleapis.com/css?family=Press+Start+2P", name = "Press Start 2P" } ]
             ]
         , Style.style Ball
             [ Color.background colours.red
