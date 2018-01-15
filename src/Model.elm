@@ -131,7 +131,7 @@ updateBallVelocity model =
                 ballVelocity.y
 
         updateVelocity =
-            if hasBallFallen model then
+            if hasBallFallen model || model.gameState == Dead then
                 { x = 0, y = 0 }
             else
                 { x = updateVelocityX
@@ -225,7 +225,7 @@ updateGame model =
         updateGameState =
             if hasBallFallen model then
                 BallFall
-            else if model.lives == 0 && model.gameState /= Start then
+            else if model.lives == 0 && model.gameState /= Start || List.length model.bricks == 0 then
                 Dead
             else
                 model.gameState
@@ -285,14 +285,14 @@ startGame model =
             { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
 
         Dead ->
-            { model | gameState = Start }
+            { model | gameState = Start, bricks = initBricks, ballPosition = ballAttributes.startPosition, paddleX = paddleAttributes.startPosition }
 
 
 movePaddleLeft : Model -> Model
 movePaddleLeft model =
     let
         updatePaddleLeftPos =
-            if model.paddleX < 5 || model.gameState == Paused then
+            if model.paddleX < 5 || model.gameState == Paused || model.gameState == Dead then
                 model.paddleX
             else
                 model.paddleX - 10
@@ -307,7 +307,7 @@ movePaddleRight model =
             gameAttributes.width - paddleAttributes.width
 
         updatePaddleRightPos =
-            if model.paddleX > (paddlePositionEnd - 5) || model.gameState == Paused then
+            if model.paddleX > (paddlePositionEnd - 5) || model.gameState == Paused || model.gameState == Dead then
                 model.paddleX
             else
                 model.paddleX + 10
