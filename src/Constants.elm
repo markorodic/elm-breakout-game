@@ -20,7 +20,7 @@ paddleAttributes =
 ballAttributes =
     { width = 5
     , height = 5
-    , velocity = 4
+    , velocity = 2
     , startPosition = { x = 180, y = 200 }
     }
 

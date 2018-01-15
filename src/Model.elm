@@ -17,6 +17,7 @@ type alias Model =
     , score : Int
     , lives : Int
     , gameState : GameState
+    , pausedVelocity : Velocity
     }
 
 
@@ -29,6 +30,7 @@ model =
     , score = gameAttributes.score
     , lives = gameAttributes.lives
     , gameState = Start
+    , pausedVelocity = { x = 0, y = 0 }
     }
 
 
@@ -215,6 +217,8 @@ updateGame model =
         updateScore =
             if doesBallHitBrick model then
                 model.score + brickScore model.ballPosition
+            else if model.gameState == Start then
+                0
             else
                 model.score
 
@@ -272,10 +276,10 @@ startGame model =
             { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
 
         Playing ->
-            { model | ballVelocity = { x = 0, y = 0 }, gameState = Paused }
+            { model | ballVelocity = { x = 0, y = 0 }, gameState = Paused, pausedVelocity = model.ballVelocity }
 
         Paused ->
-            { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
+            { model | ballVelocity = model.pausedVelocity, gameState = Playing }
 
         BallFall ->
             { model | ballVelocity = { x = ballAttributes.velocity, y = ballAttributes.velocity }, gameState = Playing }
@@ -288,8 +292,8 @@ movePaddleLeft : Model -> Model
 movePaddleLeft model =
     let
         updatePaddleLeftPos =
-            if model.paddleX < 5 then
-                0
+            if model.paddleX < 5 || model.gameState == Paused then
+                model.paddleX
             else
                 model.paddleX - 10
     in
@@ -303,8 +307,8 @@ movePaddleRight model =
             gameAttributes.width - paddleAttributes.width
 
         updatePaddleRightPos =
-            if model.paddleX > (paddlePositionEnd - 5) then
-                paddlePositionEnd
+            if model.paddleX > (paddlePositionEnd - 5) || model.gameState == Paused then
+                model.paddleX
             else
                 model.paddleX + 10
     in
