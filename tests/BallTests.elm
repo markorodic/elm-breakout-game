@@ -23,21 +23,21 @@ ballUpdates =
                         |> Expect.equal { model | ballPosition = updatedPosition, ballVelocity = { x = 4, y = 4 } }
             , test "Reset ball position on fall" <|
                 \() ->
-                    { model | ballPosition = { x = 200, y = 400 } }
+                    { model | ballPosition = { x = 200, y = 500 } }
                         |> updateBallPosition
-                        |> Expect.equal { model | ballPosition = { x = 200, y = 200 } }
+                        |> Expect.equal { model | ballPosition = { x = 160, y = 275 } }
             , test "Stop ball velocity on fall" <|
                 \() ->
-                    { model | ballPosition = { x = 200, y = 400 }, ballVelocity = { x = 4, y = 4 } }
+                    { model | ballPosition = { x = 200, y = 500 }, ballVelocity = { x = 4, y = 4 } }
                         |> updateBallVelocity
-                        |> Expect.equal { model | ballPosition = { x = 200, y = 400 }, ballVelocity = { x = 0, y = 0 } }
+                        |> Expect.equal { model | ballPosition = { x = 200, y = 500 }, ballVelocity = { x = 0, y = 0 } }
             ]
         , describe "Velocity changes due to collisions"
             [ fuzz ballNotColliding "Velocity does not change when ball is not colliding and within game bounds" <|
                 \ballPosition ->
-                    { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
+                    { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 }, gameState = Playing }
                         |> updateBallVelocity
-                        |> Expect.equal { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
+                        |> Expect.equal { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 }, gameState = Playing }
             , fuzz ballCollidingLeftWall "X velocity changes to positive on left wall collision" <|
                 \ballPosition ->
                     { model | ballPosition = ballPosition, ballVelocity = { x = -4, y = 4 } }
@@ -52,16 +52,16 @@ ballUpdates =
                 \ballPosition ->
                     { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = -4 } }
                         |> updateBallVelocity
-                        |> Expect.equal { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
+                        |> Expect.equal { model | ballPosition = ballPosition, ballVelocity = { x = 5, y = 5 } }
             , fuzz ballCollidingPaddle "Y velocity changes to positive on paddle collision" <|
-                \position ->
-                    { model | ballPosition = position.ball, ballVelocity = { x = 4, y = 4 }, paddleX = position.paddle }
+                \ballPosition ->
+                    { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = 4 } }
                         |> updateBallVelocity
-                        |> Expect.equal { model | ballPosition = position.ball, ballVelocity = { x = 4, y = -4 }, paddleX = position.paddle }
+                        |> Expect.equal { model | ballPosition = ballPosition, ballVelocity = { x = 4, y = -4 } }
             , test "Y velocity changes to positive on brick collision" <|
                 \() ->
-                    { model | ballPosition = { x = 11, y = 6 }, ballVelocity = { x = 4, y = -4 } }
+                    { model | ballPosition = { x = 5, y = 30 }, ballVelocity = { x = 4, y = -4 } }
                         |> updateBallVelocity
-                        |> Expect.equal { model | ballPosition = { x = 11, y = 6 }, ballVelocity = { x = 4, y = 4 } }
+                        |> Expect.equal { model | ballPosition = { x = 5, y = 30 }, ballVelocity = { x = 4, y = 4 } }
             ]
         ]

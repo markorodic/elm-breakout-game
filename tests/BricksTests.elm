@@ -10,19 +10,20 @@ import Test exposing (Test, describe, test)
 bricks : Test
 bricks =
     describe "Test brick initialization and removal"
-        [ test "assign first brick position" <|
+        [ 
+        test "assign first brick position" <|
             \() ->
-                { position = { x = 0, y = 0 }, size = { width = 20, height = 7 } }
+                { position = { x = 0, y = 0 }, size = { width = 28, height = 10 }, row = 0 }
                     |> assignBrickPosition 0
-                    |> Expect.equal { position = { x = 10, y = 5 }, size = { width = 20, height = 7 } }
+                    |> Expect.equal { position = { x = 0, y = 30 }, size = { width = 28, height = 10 }, row = 0 }
         , test "assign last brick position" <|
             \() ->
-                { position = { x = 0, y = 0 }, size = { width = 20, height = 7 } }
-                    |> assignBrickPosition 89
-                    |> Expect.equal { position = { x = 360, y = 65 }, size = { width = 20, height = 7 } }
+                { position = { x = 0, y = 0 }, size = { width = 28, height = 10 }, row = 0 }
+                    |> assignBrickPosition 83
+                    |> Expect.equal { position = { x = 364, y = 80 }, size = { width = 28, height = 10 }, row = 5 }
         , test "bricks are filterd on collision" <|
             \() ->
-                { model | ballPosition = { x = 11, y = 6 } }
+                { model | ballPosition = { x = 50, y = 30 } }
                     |> notCollidedBricks
                     |> List.length
                     |> Expect.equal (brickLayout.numberOfBricks - 1)

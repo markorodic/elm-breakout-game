@@ -1,5 +1,6 @@
 module Fuzzers exposing (..)
 
+import Constants exposing (..)
 import Fuzz exposing (Fuzzer)
 import Model exposing (..)
 
@@ -7,8 +8,8 @@ import Model exposing (..)
 ballInPlay : Fuzzer Ball
 ballInPlay =
     Fuzz.map2 deserializeBallPosition
-        (Fuzz.intRange 0 400)
-        (Fuzz.intRange 0 399)
+        (Fuzz.intRange 0 392)
+        (Fuzz.intRange 0 499)
 
 
 ballNotColliding : Fuzzer Ball
@@ -39,12 +40,11 @@ ballCollidingCeiling =
         ballPositionY.isCollidingCeiling
 
 
-ballCollidingPaddle : Fuzzer PaddleBall
+ballCollidingPaddle : Fuzzer Ball
 ballCollidingPaddle =
-    Fuzz.map3 deserializeBallPaddlePosition
+    Fuzz.map2 deserializeBallPosition
         ballPositionX.isCollidingPaddle
         ballPositionY.isCollidingPaddle
-        paddlePosition
 
 
 deserializeBallPosition : Int -> Int -> Ball
@@ -54,35 +54,18 @@ deserializeBallPosition xPos yPos =
     }
 
 
-type alias PaddleBall =
-    { ball : Ball
-    , paddle : Int
-    }
-
-
-deserializeBallPaddlePosition : Int -> Int -> Int -> PaddleBall
-deserializeBallPaddlePosition xPos yPos paddlePos =
-    { ball = { x = xPos, y = yPos }
-    , paddle = paddlePos
-    }
-
-
 ballPositionX =
-    { isInPlay = Fuzz.intRange 0 400
-    , isNotColliding = Fuzz.intRange 1 399
+    { isInPlay = Fuzz.intRange 0 392
+    , isNotColliding = Fuzz.intRange 1 391
     , isCollidingLeftWall = Fuzz.constant 0
-    , isCollidingRightWall = Fuzz.constant 400
-    , isCollidingPaddle = Fuzz.intRange 71 99
+    , isCollidingRightWall = Fuzz.constant 392
+    , isCollidingPaddle = Fuzz.intRange 218 276
     }
 
 
 ballPositionY =
-    { isInPlay = Fuzz.intRange 0 399
-    , isNotColliding = Fuzz.intRange 72 394
+    { isInPlay = Fuzz.intRange 0 499
+    , isNotColliding = Fuzz.intRange 91 489
     , isCollidingCeiling = Fuzz.constant 0
-    , isCollidingPaddle = Fuzz.constant 395
+    , isCollidingPaddle = Fuzz.constant 496
     }
-
-
-paddlePosition =
-    Fuzz.constant 70
