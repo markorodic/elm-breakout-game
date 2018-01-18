@@ -47,6 +47,13 @@ ballCollidingPaddle =
         ballPositionY.isCollidingPaddle
 
 
+ballFalls : Fuzzer Ball
+ballFalls =
+    Fuzz.map2 deserializeBallPosition
+        ballPositionX.isNotColliding
+        ballPositionY.hasFallen
+
+
 deserializeBallPosition : Int -> Int -> Ball
 deserializeBallPosition xPos yPos =
     { x = xPos
@@ -68,4 +75,5 @@ ballPositionY =
     , isNotColliding = Fuzz.intRange 91 489
     , isCollidingCeiling = Fuzz.constant 0
     , isCollidingPaddle = Fuzz.constant 496
+    , hasFallen = Fuzz.constant 501
     }
