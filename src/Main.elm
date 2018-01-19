@@ -4,6 +4,7 @@ import Html
 import Messages exposing (..)
 import Model exposing (..)
 import Subscriptions exposing (..)
+import Update exposing (..)
 import View
 
 
