@@ -6,6 +6,7 @@ import Fuzz exposing (Fuzzer)
 import Fuzzers exposing (..)
 import Model exposing (..)
 import Test exposing (Test, describe, fuzz, test)
+import Update exposing (..)
 
 
 gameMechanics : Test

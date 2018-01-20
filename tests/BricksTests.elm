@@ -5,13 +5,13 @@ import Constants exposing (..)
 import Expect exposing (..)
 import Model exposing (..)
 import Test exposing (Test, describe, test)
+import Update exposing (..)
 
 
 bricks : Test
 bricks =
     describe "Test brick initialization and removal"
-        [ 
-        test "assign first brick position" <|
+        [ test "assign first brick position" <|
             \() ->
                 { position = { x = 0, y = 0 }, size = { width = 28, height = 10 }, row = 0 }
                     |> assignBrickPosition 0
