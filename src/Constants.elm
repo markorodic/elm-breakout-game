@@ -21,7 +21,7 @@ ballAttributes =
     { width = 5
     , height = 5
     , velocity = 2
-    , startPosition = { x = 160, y = 275 }
+    , startPosition = { x = 120, y = 275 }
     }
 
 

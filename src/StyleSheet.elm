@@ -29,6 +29,7 @@ type Colours
 
 colours =
     { black = Color.rgb 0 0 0
+    , offBlack = Color.rgb 20 20 20
     , grey = Color.rgb 142 142 142
     , red = Color.rgb 198 73 75
     , tomato = Color.rgb 196 108 64
@@ -47,19 +48,21 @@ stylesheet =
         , Style.style GameBackground
             []
         , Style.style Text
-            [ Color.background colours.grey
-            , Color.text colours.black
+            [ Color.background colours.offBlack
+            , Color.text grey
+            , Border.left 4
+            , Border.right 4
+            , Color.background colours.offBlack
+            , Color.border colours.black
             , Font.size 40
-            , Color.border colours.grey
             , Font.typeface
                 [ Font.importUrl { url = "https://fonts.googleapis.com/css?family=Press+Start+2P", name = "Press Start 2P" } ]
             ]
         , Style.style Game
-            [ Border.all 18
-            , Border.bottom 0
-            , Border.top 0
-            , Color.background colours.black
-            , Color.border colours.grey
+            [ Border.left 4
+            , Border.right 4
+            , Color.background colours.offBlack
+            , Color.border colours.black
             , Color.text white
             , Font.size 30
             ]

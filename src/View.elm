@@ -29,14 +29,14 @@ view model =
                     GameBackground
                     [ center, verticalCenter, width (percent 100) ]
                     (column GameBackground
-                        [ center, height (percent 100), width (percent 100) ]
+                        [ spacing 15, center, height (percent 100), width (percent 100) ]
                         [ row Text
-                            [ height (px 52), width (px 400), center, spacing 80, alignBottom ]
+                            [ height (px 54), width (px 400), center, spacing 120, alignBottom ]
                             [ text (toString model.score)
                             , text (toString model.lives)
                             ]
                         , column Game
-                            [ center, verticalCenter, width (px 400), height (px 400) ]
+                            [ center, verticalCenter, width (px 400), height (px 500) ]
                             [ if model.gameState == Dead then
                                 column GameOver
                                     [ center, spacing 10 ]
