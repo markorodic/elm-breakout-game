@@ -61,14 +61,6 @@ updateBallVelocity model =
         ballVelocity =
             model.ballVelocity
 
-        updateVelocityX =
-            if doesBallHitWall ballPosition then
-                ballVelocity.x * -1
-            else if doesBallHitCeiling ballPosition then
-                round (toFloat ballVelocity.x * 1.2)
-            else
-                ballVelocity.x
-
         updateVelocityY =
             if doesBallHitPaddle model || doesBallHitBrick model then
                 ballVelocity.y * -1
@@ -76,6 +68,12 @@ updateBallVelocity model =
                 round (toFloat ballVelocity.y * -1.2)
             else
                 ballVelocity.y
+
+        updateVelocityX =
+            if doesBallHitWall ballPosition then
+                ballVelocity.x * -1
+            else
+                ballVelocity.x
 
         updateVelocity =
             if hasBallFallen model || model.gameState == Dead then
@@ -95,7 +93,7 @@ hasBallFallen model =
 
 doesBallHitWall : Ball -> Bool
 doesBallHitWall ball =
-    ball.x <= 0 || ball.x >= gameAttributes.width
+    ball.x <= 0 || ball.x + ballAttributes.width >= gameAttributes.width
 
 
 doesBallHitCeiling : Ball -> Bool
