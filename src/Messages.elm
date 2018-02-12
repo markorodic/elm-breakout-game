@@ -6,4 +6,5 @@ import Time exposing (Time)
 
 type Msg
     = KeyDown KeyCode
+    | KeyUp KeyCode
     | TickUpdate Time

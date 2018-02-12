@@ -10,6 +10,7 @@ import Messages exposing (Msg(..))
 
 type alias Model =
     { paddleX : Int
+    , paddleVelocity : Int
     , ballPosition : Ball
     , ballVelocity : Velocity
     , bricks : List Brick
@@ -23,6 +24,7 @@ type alias Model =
 model : Model
 model =
     { paddleX = paddleAttributes.startPosition
+    , paddleVelocity = 0
     , ballPosition = ballAttributes.startPosition
     , ballVelocity = { x = 0, y = 0 }
     , bricks = initBricks

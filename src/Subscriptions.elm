@@ -12,7 +12,7 @@ import Time exposing (Time)
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.batch [ arrowChanged, tick ]
+    Sub.batch [ tick, keyDown, keyUp ]
 
 
 tick : Sub Msg
@@ -20,6 +20,9 @@ tick =
     AnimationFrame.diffs TickUpdate
 
 
-arrowChanged : Sub Msg
-arrowChanged =
+keyDown =
     Keyboard.downs KeyDown
+
+
+keyUp =
+    Keyboard.ups KeyUp

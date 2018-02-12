@@ -14,6 +14,7 @@ paddleAttributes =
     , height = 5
     , yPosition = 495
     , startPosition = 175
+    , velocity = { left = -5, right = 5 }
     }
 
 

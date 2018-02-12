@@ -16,6 +16,9 @@ update msg model =
         KeyDown keyCode ->
             ( keyDown keyCode model, Cmd.none )
 
+        KeyUp keyCode ->
+            ( keyUp keyCode model, Cmd.none )
+
         TickUpdate dt ->
             ( gameLoop model, Cmd.none )
 
@@ -27,6 +30,26 @@ gameLoop model =
         |> updateBallVelocity
         |> updateNumberOfBricks
         |> updateBallPosition
+        |> updatePaddlePosition
+
+
+updatePaddlePosition : Model -> Model
+updatePaddlePosition model =
+    let
+        paddlePositionEnd =
+            gameAttributes.width - paddleAttributes.width - 6
+
+        updateVelocity =
+            if model.gameState == Paused || model.gameState == Dead then
+                model.paddleX
+            else if model.paddleX == 0 && model.paddleVelocity == -5 then
+                model.paddleX
+            else if model.paddleX > paddlePositionEnd && model.paddleVelocity == 5 then
+                model.paddleX
+            else
+                model.paddleX + model.paddleVelocity
+    in
+    { model | paddleX = updateVelocity }
 
 
 updateBallPosition : Model -> Model
@@ -192,13 +215,29 @@ keyDown : KeyCode -> Model -> Model
 keyDown keyCode model =
     case keyCode of
         37 ->
-            movePaddleLeft model
+            movePaddle model paddleAttributes.velocity.left
 
         39 ->
-            movePaddleRight model
+            movePaddle model paddleAttributes.velocity.right
 
         32 ->
             startGame model
+
+        _ ->
+            model
+
+
+keyUp : KeyCode -> Model -> Model
+keyUp keyCode model =
+    case keyCode of
+        37 ->
+            stopPaddle model
+
+        39 ->
+            stopPaddle model
+
+        32 ->
+            model
 
         _ ->
             model
@@ -233,28 +272,15 @@ startGame model =
             { model | gameState = Start, bricks = initBricks, ballPosition = ballAttributes.startPosition, paddleX = paddleAttributes.startPosition }
 
 
-movePaddleLeft : Model -> Model
-movePaddleLeft model =
+movePaddle : Model -> Int -> Model
+movePaddle model paddleVelocity =
     let
-        updatePaddleLeftPos =
-            if model.paddleX < 5 || model.gameState == Paused || model.gameState == Dead then
-                model.paddleX
-            else
-                model.paddleX - 10
+        updatePaddleVelocity =
+            paddleVelocity
     in
-    { model | paddleX = updatePaddleLeftPos }
+    { model | paddleVelocity = updatePaddleVelocity }
 
 
-movePaddleRight : Model -> Model
-movePaddleRight model =
-    let
-        paddlePositionEnd =
-            gameAttributes.width - paddleAttributes.width
-
-        updatePaddleRightPos =
-            if model.paddleX > (paddlePositionEnd - 5) || model.gameState == Paused || model.gameState == Dead then
-                model.paddleX
-            else
-                model.paddleX + 10
-    in
-    { model | paddleX = updatePaddleRightPos }
+stopPaddle : Model -> Model
+stopPaddle model =
+    { model | paddleVelocity = 0 }
