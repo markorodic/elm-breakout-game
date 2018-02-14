@@ -1,15 +1,20 @@
 module Model exposing (..)
 
-import Bricks exposing (..)
-import Constants exposing (..)
+import Constants exposing (ballAttributes, gameAttributes, paddleAttributes)
+import Keyboard exposing (KeyCode)
 import Messages exposing (Msg(..))
+import Model.Ball exposing (Ball)
+import Model.Bricks exposing (Brick, initBricks)
+import Time exposing (Time)
 
 
--- MODEL
+init : ( Model, Cmd Msg )
+init =
+    ( model, Cmd.none )
 
 
 type alias Model =
-    { paddleX : Int
+    { paddlePositionX : Int
     , paddleVelocity : Int
     , ballPosition : Ball
     , ballVelocity : Velocity
@@ -23,7 +28,7 @@ type alias Model =
 
 model : Model
 model =
-    { paddleX = paddleAttributes.startPosition
+    { paddlePositionX = paddleAttributes.startPosition
     , paddleVelocity = 0
     , ballPosition = ballAttributes.startPosition
     , ballVelocity = { x = 0, y = 0 }
@@ -35,26 +40,9 @@ model =
     }
 
 
-type alias Ball =
-    { x : Int
-    , y : Int
-    }
-
-
 type alias Velocity =
     { x : Int
     , y : Int
-    }
-
-
-type alias Device =
-    { width : Int
-    , height : Int
-    , phone : Bool
-    , tablet : Bool
-    , desktop : Bool
-    , bigDesktop : Bool
-    , portrait : Bool
     }
 
 
@@ -64,8 +52,3 @@ type GameState
     | Paused
     | BallFall
     | Dead
-
-
-init : ( Model, Cmd Msg )
-init =
-    ( model, Cmd.none )

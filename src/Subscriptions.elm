@@ -1,13 +1,10 @@
 module Subscriptions exposing (subscriptions)
 
-import AnimationFrame exposing (..)
-import Keyboard
-import Messages exposing (..)
-import Model exposing (..)
+import AnimationFrame exposing (diffs)
+import Keyboard exposing (downs, ups)
+import Messages exposing (Msg(..))
+import Model exposing (Model)
 import Time exposing (Time)
-
-
--- SUBSCRIPTIONS
 
 
 subscriptions : Model -> Sub Msg
@@ -17,12 +14,12 @@ subscriptions model =
 
 tick : Sub Msg
 tick =
-    AnimationFrame.diffs TickUpdate
+    diffs TickUpdate
 
 
 keyDown =
-    Keyboard.downs KeyDown
+    downs KeyDown
 
 
 keyUp =
-    Keyboard.ups KeyUp
+    ups KeyUp

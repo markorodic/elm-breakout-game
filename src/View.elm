@@ -1,23 +1,19 @@
 module View exposing (view)
 
-import Bricks exposing (..)
-import Constants exposing (..)
+import Constants exposing (ballAttributes, paddleAttributes)
 import Element exposing (column, el, empty, layout, link, modal, row, screen, text, within)
 import Element.Attributes exposing (alignBottom, center, fillPortion, height, padding, percent, px, spacing, spacingXY, verticalCenter, width)
 import Html exposing (Html)
-import Messages exposing (..)
+import Messages exposing (Msg)
 import Model exposing (..)
-import StyleSheet exposing (..)
-
-
--- VIEW
+import View.StyleSheet exposing (..)
 
 
 view : Model -> Html Msg
 view model =
     let
         nodes =
-            displayPaddle (toFloat model.paddleX)
+            displayPaddle (toFloat model.paddlePositionX)
                 :: displayBall model.ballPosition.x model.ballPosition.y
                 :: List.map displayBricks model.bricks
     in
@@ -64,7 +60,7 @@ displayBall x y =
         (toFloat y)
         ballAttributes.width
         ballAttributes.height
-        StyleSheet.Ball
+        View.StyleSheet.Ball
 
 
 displayPaddle x =

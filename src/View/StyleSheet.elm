@@ -1,4 +1,4 @@
-module StyleSheet exposing (..)
+module View.StyleSheet exposing (..)
 
 import Color exposing (..)
 import Style exposing (..)

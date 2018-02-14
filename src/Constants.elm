@@ -1,4 +1,12 @@
-module Constants exposing (..)
+module Constants
+    exposing
+        ( ballAttributes
+        , brickAttributes
+        , brickLayout
+        , brickPoints
+        , gameAttributes
+        , paddleAttributes
+        )
 
 
 gameAttributes =
@@ -9,20 +17,20 @@ gameAttributes =
     }
 
 
+ballAttributes =
+    { width = 5
+    , height = 5
+    , velocity = 2
+    , startPosition = { x = 200, y = 275 }
+    }
+
+
 paddleAttributes =
     { width = 60
     , height = 5
     , yPosition = 495
     , startPosition = 175
     , velocity = { left = -5, right = 5 }
-    }
-
-
-ballAttributes =
-    { width = 5
-    , height = 5
-    , velocity = 2
-    , startPosition = { x = 200, y = 275 }
     }
 
 

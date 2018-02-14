@@ -1,6 +1,7 @@
 # Breakout in Elm
+A simple [breakout clone](https://markorodic.github.io/elm-breakout-game/) writtien in Elm.
 
-A simple breakout clone writtien in Elm
+[![screenshot](gameScreenShot.png)](https://markorodic.github.io/elm-breakout-game/)
 
 ## Instructions to run
 
