@@ -29,12 +29,8 @@ updatePaddlePosition model =
 
 
 movePaddle : Model -> Int -> Model
-movePaddle model paddleVelocity =
-    let
-        updatePaddleVelocity =
-            paddleVelocity
-    in
-    { model | paddleVelocity = updatePaddleVelocity }
+movePaddle model updateVelocityFromInput =
+    { model | paddleVelocity = updateVelocityFromInput }
 
 
 stopPaddle : Model -> Model
