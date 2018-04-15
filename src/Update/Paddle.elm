@@ -12,20 +12,38 @@ import Model exposing (..)
 updatePaddlePosition : Model -> Model
 updatePaddlePosition model =
     let
+        updatedVelocity =
+            updatePaddleVelocity model
+    in
+    { model | paddlePositionX = updatedVelocity }
+
+
+updatePaddleVelocity : Model -> Int
+updatePaddleVelocity model =
+    if gameIsActive model && paddleCanMove model then
+        model.paddlePositionX + model.paddleVelocity
+    else
+        model.paddlePositionX
+
+
+gameIsActive : Model -> Bool
+gameIsActive model =
+    model.gameState == Start || model.gameState == Playing || model.gameState == BallFall
+
+
+paddleCanMove : Model -> Bool
+paddleCanMove model =
+    let
         paddlePositionEnd =
             gameAttributes.width - paddleAttributes.width - 6
 
-        updateVelocity =
-            if model.gameState == Paused || model.gameState == Dead then
-                model.paddlePositionX
-            else if model.paddlePositionX == 0 && model.paddleVelocity == -5 then
-                model.paddlePositionX
-            else if model.paddlePositionX > paddlePositionEnd && model.paddleVelocity == 5 then
-                model.paddlePositionX
-            else
-                model.paddlePositionX + model.paddleVelocity
+        paddleCanMoveLeft =
+            model.paddlePositionX > 5 && model.paddleVelocity == -5
+
+        paddleCanMoveRight =
+            model.paddlePositionX < paddlePositionEnd && model.paddleVelocity == 5
     in
-    { model | paddlePositionX = updateVelocity }
+    paddleCanMoveLeft || paddleCanMoveRight
 
 
 movePaddle : Model -> Int -> Model
