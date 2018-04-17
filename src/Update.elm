@@ -26,8 +26,8 @@ update msg model =
 gameLoop : Model -> Model
 gameLoop model =
     model
-        |> updateGame
-        |> updateBallVelocity
-        |> updateNumberOfBricks
         |> updateBallPosition
+        |> updateBallVelocity
+        |> updateGame
+        |> updateNumberOfBricks
         |> updatePaddlePosition
