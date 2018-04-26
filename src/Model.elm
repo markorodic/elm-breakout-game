@@ -1,10 +1,11 @@
 module Model exposing (..)
 
-import Constants exposing (ballAttributes, gameAttributes, paddleAttributes)
 import Keyboard exposing (KeyCode)
 import Messages exposing (Msg(..))
-import Model.Ball exposing (Ball)
+import Model.Ball exposing (Ball, initBall)
 import Model.Bricks exposing (Brick, initBricks)
+import Model.Game exposing (GameState, InitGame, initGame)
+import Model.Paddle exposing (InitPaddle, initPaddle)
 import Time exposing (Time)
 
 
@@ -14,41 +15,17 @@ init =
 
 
 type alias Model =
-    { paddlePositionX : Int
-    , paddleVelocity : Int
-    , ballPosition : Ball
-    , ballVelocity : Velocity
+    { paddle : InitPaddle
+    , ball : Ball
     , bricks : List Brick
-    , score : Int
-    , lives : Int
-    , gameState : GameState
-    , pausedVelocity : Velocity
+    , game : InitGame
     }
 
 
 model : Model
 model =
-    { paddlePositionX = paddleAttributes.startPosition
-    , paddleVelocity = 0
-    , ballPosition = ballAttributes.startPosition
-    , ballVelocity = { x = 0, y = 0 }
+    { paddle = initPaddle
+    , ball = initBall
     , bricks = initBricks
-    , score = gameAttributes.score
-    , lives = gameAttributes.lives
-    , gameState = Start
-    , pausedVelocity = { x = 0, y = 0 }
+    , game = initGame
     }
-
-
-type alias Velocity =
-    { x : Int
-    , y : Int
-    }
-
-
-type GameState
-    = Start
-    | Playing
-    | Paused
-    | BallFall
-    | Dead

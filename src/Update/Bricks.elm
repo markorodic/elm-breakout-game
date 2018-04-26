@@ -7,12 +7,12 @@ module Update.Bricks
 
 import Constants exposing (..)
 import Model exposing (Model)
-import Model.Ball exposing (Ball)
+import Model.Ball exposing (Ball, BallValue)
 import Model.Bricks exposing (Brick)
 
 
-hasBallHitBrick : Ball -> Brick -> Bool
-hasBallHitBrick ball brick =
+hasBallHitBrick : BallValue -> Brick -> Bool
+hasBallHitBrick ballPosition brick =
     let
         brickStartX =
             brick.position.x
@@ -27,14 +27,14 @@ hasBallHitBrick ball brick =
             brick.position.y + brickAttributes.height
 
         ballCenterX =
-            ball.x + round (0.5 * ballAttributes.width)
+            ballPosition.x + round (0.5 * ballAttributes.width)
     in
-    ballCenterX > brickStartX && ballCenterX < brickEndX && ball.y + ballAttributes.height > brickStartY && ball.y < brickEndY
+    ballCenterX > brickStartX && ballCenterX < brickEndX && ballPosition.y + ballAttributes.height > brickStartY && ballPosition.y < brickEndY
 
 
 notCollidedBricks : Model -> List Brick
 notCollidedBricks model =
-    List.filter (\brick -> not (hasBallHitBrick model.ballPosition brick)) model.bricks
+    List.filter (\brick -> not (hasBallHitBrick model.ball.position brick)) model.bricks
 
 
 updateNumberOfBricks : Model -> Model

@@ -4,10 +4,11 @@ import Keyboard exposing (KeyCode)
 import Keys exposing (keyDown, keyUp)
 import Messages exposing (Msg(..))
 import Model exposing (Model)
-import Update.Ball exposing (updateBallPosition, updateBallVelocity)
+import Model.Game exposing (GameState(..))
+import Update.Ball exposing (updateBall)
 import Update.Bricks exposing (updateNumberOfBricks)
 import Update.Game exposing (updateGame)
-import Update.Paddle exposing (updatePaddlePosition)
+import Update.Paddle exposing (updatePaddle)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -26,8 +27,7 @@ update msg model =
 gameLoop : Model -> Model
 gameLoop model =
     model
-        |> updateBallPosition
-        |> updateBallVelocity
+        |> updateBall
         |> updateGame
         |> updateNumberOfBricks
-        |> updatePaddlePosition
+        |> updatePaddle

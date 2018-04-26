@@ -20,7 +20,7 @@ gameAttributes =
 ballAttributes =
     { width = 5
     , height = 5
-    , velocity = 2
+    , startVelocity = { x = 2, y = 2 }
     , startPosition = { x = 200, y = 275 }
     }
 

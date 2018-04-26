@@ -6,6 +6,7 @@ import Element.Attributes exposing (alignBottom, center, fillPortion, height, pa
 import Html exposing (Html)
 import Messages exposing (Msg)
 import Model exposing (..)
+import Model.Game exposing (GameState(..))
 import View.StyleSheet exposing (..)
 
 
@@ -13,8 +14,8 @@ view : Model -> Html Msg
 view model =
     let
         nodes =
-            displayPaddle (toFloat model.paddlePositionX)
-                :: displayBall model.ballPosition.x model.ballPosition.y
+            displayPaddle (toFloat model.paddle.position)
+                :: displayBall model.ball.position.x model.ball.position.y
                 :: List.map displayBricks model.bricks
     in
     layout stylesheet <|
@@ -28,21 +29,21 @@ view model =
                         [ spacing 15, center, height (percent 100), width (percent 100) ]
                         [ row Text
                             [ height (px 54), width (px 400), center, spacing 120, alignBottom ]
-                            [ text (toString model.score)
-                            , text (toString model.lives)
+                            [ text (toString model.game.score)
+                            , text (toString model.game.lives)
                             ]
                         , column Game
                             [ center, verticalCenter, width (px 400), height (px 500) ]
-                            [ if model.gameState == Dead then
+                            [ if model.game.state == Gameover then
                                 column GameOver
                                     [ center, spacing 10 ]
                                     [ text "Game Over"
-                                    , text ("Score:" ++ toString model.score)
+                                    , text ("Score:" ++ toString model.game.score)
                                     ]
-                              else if model.gameState == Paused then
-                                el GameOver
-                                    []
-                                    (text "Paused")
+                                -- else if model.game.state == Pause then
+                                --   el GameOver
+                                --       []
+                                --       (text "Paused")
                               else
                                 empty
                             ]

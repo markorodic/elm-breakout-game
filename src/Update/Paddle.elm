@@ -2,55 +2,56 @@ module Update.Paddle
     exposing
         ( movePaddle
         , stopPaddle
-        , updatePaddlePosition
+        , updatePaddle
         )
 
 import Constants exposing (gameAttributes, paddleAttributes)
 import Model exposing (..)
+import Model.Game exposing (GameState(..))
+import Model.Paddle exposing (InitPaddle)
 
 
-updatePaddlePosition : Model -> Model
-updatePaddlePosition model =
+updatePaddle : Model -> Model
+updatePaddle model =
     let
-        updatedVelocity =
-            updatePaddleVelocity model
+        { paddle } =
+            model
     in
-    { model | paddlePositionX = updatedVelocity }
+    { model | paddle = { paddle | position = addVelocityToPosition paddle } }
 
 
-updatePaddleVelocity : Model -> Int
-updatePaddleVelocity model =
-    if gameIsActive model && paddleCanMove model then
-        model.paddlePositionX + model.paddleVelocity
+addVelocityToPosition : InitPaddle -> Int
+addVelocityToPosition paddle =
+    let
+        { position, velocity } =
+            paddle
+    in
+    if paddleCanMove position velocity then
+        position + velocity
     else
-        model.paddlePositionX
+        position
 
 
-gameIsActive : Model -> Bool
-gameIsActive model =
-    model.gameState == Start || model.gameState == Playing || model.gameState == BallFall
-
-
-paddleCanMove : Model -> Bool
-paddleCanMove model =
+paddleCanMove : Int -> Int -> Bool
+paddleCanMove position velocity =
     let
         paddlePositionEnd =
             gameAttributes.width - paddleAttributes.width - 6
 
         paddleCanMoveLeft =
-            model.paddlePositionX > 5 && model.paddleVelocity == -5
+            position > 5 && velocity == -5
 
         paddleCanMoveRight =
-            model.paddlePositionX < paddlePositionEnd && model.paddleVelocity == 5
+            position < paddlePositionEnd && velocity == 5
     in
     paddleCanMoveLeft || paddleCanMoveRight
 
 
-movePaddle : Model -> Int -> Model
-movePaddle model updateVelocityFromInput =
-    { model | paddleVelocity = updateVelocityFromInput }
+movePaddle : InitPaddle -> Int -> InitPaddle
+movePaddle paddle updateVelocityFromInput =
+    { paddle | velocity = updateVelocityFromInput }
 
 
-stopPaddle : Model -> Model
-stopPaddle model =
-    { model | paddleVelocity = 0 }
+stopPaddle : InitPaddle -> InitPaddle
+stopPaddle paddle =
+    { paddle | velocity = 0 }

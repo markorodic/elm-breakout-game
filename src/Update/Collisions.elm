@@ -2,32 +2,32 @@ module Update.Collisions exposing (..)
 
 import Constants exposing (..)
 import Model exposing (Model)
-import Model.Ball exposing (Ball)
+import Model.Ball exposing (BallValue)
 import Update.Bricks exposing (..)
 
 
-doesBallHitWall : Ball -> Bool
-doesBallHitWall ball =
-    ball.x <= 0 || ball.x + ballAttributes.width >= gameAttributes.width
+doesBallHitWall : BallValue -> Bool
+doesBallHitWall ballPosition =
+    ballPosition.x <= 0 || ballPosition.x >= gameAttributes.width
 
 
-doesBallHitCeiling : Ball -> Bool
-doesBallHitCeiling ball =
-    ball.y <= 0
+doesBallHitCeiling : BallValue -> Bool
+doesBallHitCeiling ballPosition =
+    ballPosition.y <= 0
 
 
-doesBallHitPaddle : Model -> Bool
-doesBallHitPaddle model =
+doesBallHitPaddle : BallValue -> Int -> Bool
+doesBallHitPaddle ballPosition paddlePosition =
     let
         ballCenter =
-            model.ballPosition.x + round (0.5 * ballAttributes.width)
+            ballPosition.x + round (0.5 * ballAttributes.width)
     in
     ballCenter
-        > model.paddlePositionX
+        > paddlePosition
         && ballCenter
-        < model.paddlePositionX
+        < paddlePosition
         + paddleAttributes.width
-        && model.ballPosition.y
+        && ballPosition.y
         + ballAttributes.height
         >= paddleAttributes.yPosition
 
