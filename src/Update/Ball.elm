@@ -7,6 +7,7 @@ module Update.Ball
 import Constants exposing (ballAttributes, gameAttributes)
 import Model exposing (..)
 import Model.Ball exposing (Ball, BallValue)
+import Model.Bricks exposing (Brick)
 import Model.Game exposing (GameState(..))
 import Update.Collisions exposing (doesBallHitBrick, doesBallHitCeiling, doesBallHitPaddle, doesBallHitWall)
 
@@ -24,7 +25,7 @@ updatePosition model =
         { ball } =
             model
     in
-    { model | ball = { ball | position = addVelocityToPosition model.ball } }
+    { model | ball = { ball | position = addVelocityToPosition ball } }
 
 
 addVelocityToPosition : Ball -> BallValue
@@ -56,7 +57,7 @@ updateVelocity model =
 velocityFromCollisions : Model -> BallValue
 velocityFromCollisions model =
     let
-        { ball } =
+        { ball, bricks } =
             model
 
         { position } =
@@ -68,7 +69,7 @@ velocityFromCollisions model =
         }
     else
         { x = handleXCollisions ball
-        , y = handleYCollisions model
+        , y = handleYCollisions bricks ball
         }
 
 
@@ -84,16 +85,19 @@ handleXCollisions ball =
         velocity.x
 
 
-handleYCollisions : Model -> Int
-handleYCollisions model =
+handleYCollisions : List Brick -> Ball -> Int
+handleYCollisions bricks ball =
     let
         { position, velocity } =
             model.ball
 
+        { bricks, ball } =
+            model
+
         paddlePosition =
             model.paddle.position
     in
-    if doesBallHitPaddle position paddlePosition || doesBallHitBrick model then
+    if doesBallHitPaddle position paddlePosition || doesBallHitBrick bricks ball then
         velocity.y * -1
     else if doesBallHitCeiling position then
         round (toFloat velocity.y * -1.2)

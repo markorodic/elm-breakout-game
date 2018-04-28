@@ -32,15 +32,18 @@ hasBallHitBrick ballPosition brick =
     ballCenterX > brickStartX && ballCenterX < brickEndX && ballPosition.y + ballAttributes.height > brickStartY && ballPosition.y < brickEndY
 
 
-notCollidedBricks : Model -> List Brick
-notCollidedBricks model =
-    List.filter (\brick -> not (hasBallHitBrick model.ball.position brick)) model.bricks
+notCollidedBricks : List Brick -> Ball -> List Brick
+notCollidedBricks bricks ball =
+    List.filter (\brick -> not (hasBallHitBrick ball.position brick)) bricks
 
 
 updateNumberOfBricks : Model -> Model
 updateNumberOfBricks model =
     let
+        { ball, bricks } =
+            model
+
         remainingBricks =
-            notCollidedBricks model
+            notCollidedBricks bricks ball
     in
     { model | bricks = remainingBricks }

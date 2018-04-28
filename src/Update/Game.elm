@@ -48,10 +48,13 @@ updateScore model =
         { position } =
             model.ball
 
+        { ball, bricks } =
+            model
+
         newGame =
             model.game
     in
-    if doesBallHitBrick model then
+    if doesBallHitBrick bricks ball then
         { model | game = { newGame | score = score + brickScore position } }
         -- else if state == Gameover then
         --     { model | game = { newGame | score = 0 } }

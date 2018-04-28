@@ -2,7 +2,8 @@ module Update.Collisions exposing (..)
 
 import Constants exposing (..)
 import Model exposing (Model)
-import Model.Ball exposing (BallValue)
+import Model.Ball exposing (Ball, BallValue)
+import Model.Bricks exposing (Brick)
 import Update.Bricks exposing (..)
 
 
@@ -32,6 +33,6 @@ doesBallHitPaddle ballPosition paddlePosition =
         >= paddleAttributes.yPosition
 
 
-doesBallHitBrick : Model -> Bool
-doesBallHitBrick model =
-    not (model.bricks == notCollidedBricks model)
+doesBallHitBrick : List Brick -> Ball -> Bool
+doesBallHitBrick bricks ball =
+    not (bricks == notCollidedBricks bricks ball)
