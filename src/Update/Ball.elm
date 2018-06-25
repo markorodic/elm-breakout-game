@@ -57,7 +57,7 @@ updateVelocity model =
 velocityFromCollisions : Model -> BallValue
 velocityFromCollisions model =
     let
-        { ball, bricks } =
+        { ball, bricks, paddle } =
             model
 
         { position } =
@@ -69,7 +69,7 @@ velocityFromCollisions model =
         }
     else
         { x = handleXCollisions ball
-        , y = handleYCollisions bricks ball
+        , y = handleYCollisions bricks ball paddle.position
         }
 
 
@@ -85,22 +85,16 @@ handleXCollisions ball =
         velocity.x
 
 
-handleYCollisions : List Brick -> Ball -> Int
-handleYCollisions bricks ball =
+handleYCollisions : List Brick -> Ball -> Int -> Int
+handleYCollisions bricks ball paddlePosition =
     let
         { position, velocity } =
-            model.ball
-
-        { bricks, ball } =
-            model
-
-        paddlePosition =
-            model.paddle.position
+            ball
     in
     if doesBallHitPaddle position paddlePosition || doesBallHitBrick bricks ball then
         velocity.y * -1
     else if doesBallHitCeiling position then
-        round (toFloat velocity.y * -1.2)
+        2
     else
         velocity.y
 
