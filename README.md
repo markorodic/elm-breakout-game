@@ -1,5 +1,5 @@
 # Breakout - Elm
-This is part: 4 of a series of projects building an clone of the Atari game Breakout using different javascript paradigms:
+This is part: 4 of a series of projects building a clone of the Atari game Breakout using different javascript paradigms:
 * [Breakout - Javascript prototypal inheritance](https://github.com/markorodic/breakout-game)
 * [Breakout - Javascript es6 classes](https://github.com/markorodic/breakout-game-es6-classes)
 * [Breakout - functional Javascript](https://github.com/markorodic/breakout-game-functional-js)
